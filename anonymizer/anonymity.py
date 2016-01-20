@@ -19,3 +19,13 @@ def get_k(df, groupby):
     """
     size_group = df.groupby(groupby).size()
     return min(size_group)
+
+
+def less_anonym_groups(df, groupby):
+    grp = df.groupby(groupby)
+    size_group = grp.size()
+    select = size_group[size_group == min(size_group)]
+    results = []
+    for group_index in select.index:
+        results += [grp.get_group(group_index)]
+    return results

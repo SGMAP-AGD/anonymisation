@@ -7,7 +7,7 @@ Created on Sun Nov 01 19:28:44 2015
 
 import pandas as pd
 
-from anonymizer.anonymity import get_k
+from anonymizer.anonymity import get_k, less_anonym_groups
 from anonymizer.diversity import (get_l, get_diversities, diversity_distribution,
                        less_diverse_groups)
 
@@ -36,6 +36,9 @@ class AnonymDataFrame(object):
 
     def get_k(self):
         return get_k(self.df, self.identifiant)
+
+    def less_anonym_groups(self):
+        return less_anonym_groups(self.df, self.identifiant)
 
     def get_l(self):
         return get_l(self.df, self.identifiant, self.sensible)
