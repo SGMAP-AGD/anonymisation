@@ -49,6 +49,7 @@ def get_diversities(df, groupby, column):
     res = grp[column].agg({'l_diversity' : _l_diversity })
     return res
 
+
 def get_l(df, groupby, column):
     """
         Return the l-diversity value as an integer.

@@ -19,11 +19,14 @@ class AnonymDataFrame(object):
         self.df = df
 
         columns = df.columns
-        for var in [var_identifiantes, var_sensibles]:
+        for var in [var_identifiantes]:
             assert isinstance(var, list)
-        assert all([x in columns for x in var_identifiantes])
-        assert all([x in columns for x in var_sensibles])
-        assert len(set(var_identifiantes) | set(var_sensibles))
+        assert isinstance(var_sensibles, str)
+        if not all([x in columns for x in var_identifiantes]):
+            not_in_columns = [x for x in var_identifiantes if x not in columns]
+            raise Exception(not_in_columns, ' not in df.columns')
+        assert var_sensibles in columns
+        assert var_sensibles not in var_identifiantes
         self.identifiant = var_identifiantes
         self.sensible = var_sensibles
 
@@ -45,6 +48,5 @@ class AnonymDataFrame(object):
 
     def less_diverse_groups(self):
         return less_diverse_groups(self.df, self.identifiant, self.sensible)
-
 
 
