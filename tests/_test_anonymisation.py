@@ -33,5 +33,5 @@ class TestAnonymisationMethods(unittest.TestCase):
         self.assertEqual(l_diversity, 3)
 
 if __name__ == '__main__':
-#    unittest.main()
-    pass
+    unittest.main()
+

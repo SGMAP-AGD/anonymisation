@@ -7,7 +7,7 @@ Created on Sun Nov 01 19:28:44 2015
 
 import pandas as pd
 
-from anonymizer.anonimity import get_k
+from anonymizer.anonymity import get_k
 from anonymizer.diversity import (get_l, get_diversities, diversity_distribution,
                        less_diverse_groups)
 
@@ -46,11 +46,5 @@ class AnonymDataFrame(object):
     def less_diverse_groups(self):
         return less_diverse_groups(self.df, self.identifiant, self.sensible)
 
-
-
-
-tab['annee_naiss'] = tab['date_naiss'].str[6:]
-test = AnonymDataFrame(tab, ['annee_naiss', 'sexe', 'robe'], ['nom', 'conso'])
-test.list_valeurs_identifiantes()
 
 
