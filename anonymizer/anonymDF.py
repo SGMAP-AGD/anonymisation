@@ -50,3 +50,16 @@ class AnonymDataFrame(object):
         return less_diverse_groups(self.df, self.identifiant, self.sensible)
 
 
+    def transform(self, transformation):
+        ''' return a new AnonymDataFrame with
+            transformation is a dict where:
+                keys are columns of self.df
+                values are transformations to operate on var
+        '''
+        assert isinstance(transformation, dict)
+        assert all([x in self.df.columns for x in transformation])
+        df = self.df.copy()
+        for colname, transfo in transformation.iteritems():
+            df[colname] = transfo(self.df[colname])
+        return AnonymDataFrame(df, self.identifiant, self.sensible)
+
