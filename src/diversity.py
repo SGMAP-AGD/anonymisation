@@ -1,24 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Created on Wed Jan 20 10:55:46 2016
 
-import pandas as pd
-
-__author__ = "Alexis, Paul"
-
-
-def get_k(df, groupby):
-    """
-        Return the k-anonymity level of a df, grouped by the specified columns.
-
-        :param df: The dataframe to get k from
-        :param groupby: The columns to group by
-        :type df: pandas.DataFrame
-        :type groupby: Array
-        :return: k-anonymity
-        :rtype: int
-    """
-    size_group = df.groupby(groupby).size()
-    return min(size_group)
+@author: Alexis Eidelman, Paul
+"""
 
 
 def _l_diversity(x):
@@ -63,7 +48,6 @@ def get_diversities(df, groupby, column):
     grp = df.groupby(groupby)
     res = grp[column].agg({'l_diversity' : _l_diversity })
     return res
-
 
 def get_l(df, groupby, column):
     """
