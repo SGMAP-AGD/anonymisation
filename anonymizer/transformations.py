@@ -49,10 +49,14 @@ def period_by_hours(x, separation):
         hour = x.dt.hour
         hour_categ = pd.cut(hour, separation, right=False).astype(str)
         night_categ = '[' + str(separation[-1]) + ', ' + str(separation[0]) + ')'
-        hour_categ[(hour < separation[0]) & (hour >= separation[-1])] = night_categ
-        date_categ = x.dt.date
-        date_categ[x.dt.hour < separation[1]] -= pd.DateOffset(1)
-        return date_categ.astype(str) + ' ' + hour_categ
+        hour_categ[(hour < separation[0]) | (hour >= separation[-1])] = night_categ
+        assert hour_categ.nunique(dropna=False) == len(separation)
+        date_categ = x.dt.date.astype(str)
+        # décalage d'un jour pour les premières heures
+        decale = x.dt.date[x.dt.hour < separation[1]] + pd.DateOffset(days=-1)
+        date_categ[x.dt.hour < separation[1]] = decale.astype(str)
+        assert all(date_categ.str.len() == 10)
+        return date_categ + ' ' + hour_categ
 
 
 ### 4 - special
