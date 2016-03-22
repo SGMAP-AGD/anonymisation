@@ -21,6 +21,10 @@ def get_k(df, groupby):
     return min(size_group)
 
 
+def get_anonymities(df, groupby):
+    return df.groupby(groupby).size()
+
+
 def less_anonym_groups(df, groupby):
     grp = df.groupby(groupby)
     size_group = grp.size()
