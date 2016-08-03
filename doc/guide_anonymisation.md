@@ -39,11 +39,12 @@ Lors d'une anonymisation par aggrégation, les variables sont modifiées de tell
 + On peut appliquer un changement d'échelle, en passant, par exemple, d'un code communal (75001) à un code départemental (75).  
 + On peut aussi fusionner plusieurs modalités, soit de façon générale (sur toute la base), soit de manière locale (seules les modalités des lignes qui posent problème seront modifiées). Exemple : deux lignes qui prennent comme code postal "75001" et "75014" prennent comme nouvelle modalité "75001 ou 75014".
 
-## K-anonymat
+### K-anonymat
+La k-anonymisation considère une base de données comme anonymisée, si et seulement si, à chaque combinaison de modalités de variables qui composent la base correspond un nombre *minimum* k d'individus.
 
-## L-Diversité
+### L-Diversité
 
-## Mesurer la perte d'informations
+### Mesurer la perte d'informations
 
 ARTICLE 29 DATA PROTECTION WORKING PARTY
 http://ec.europa.eu/justice/data-protection/article-29/documentation/opinion-recommendation/files/2014/wp216_en.pdf
