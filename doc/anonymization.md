@@ -11,7 +11,7 @@ k = anonymization.get_k(iris_anonymized)
 
 K-anonymiser de façon locale un dataframe en utilisant la fonction `local_aggregation` :
 
-```
+```python
 from agd_tools import anonymization
 
 k = 5 
