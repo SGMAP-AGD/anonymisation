@@ -20,7 +20,7 @@ Notons que la frontière entre ces différents types est parfois assez poreuse :
 ## Variables identifiantes
 
 Les variables identifiantes sont obfusquées ou tout simplement retirées lors de l'anonymisation.
-On parle alors de pseudonymisation une fois cette étape passée. Le jeu de données n'est à ce stade pas encore anonymis.
+On parle alors de **pseudonymisation** une fois cette étape passée. Le jeu de données n'est à ce stade pas encore anonymisé.
 
 ### Obfuscation
 
@@ -48,9 +48,7 @@ On considère qu'une base de données est l-diverse :
 + si à chaque combinaison de modalités de variables quasi-identifiantes qui composent la base correspond un groupe composé *d'au moins* k individus et,
 + si ce groupe présente *au moins* l modalités différentes en ce qui concerne la (ou les) variable(s) sensible(s).
 
-### Mesurer la perte d'informations  
-En cours.  
-
+### Mesurer la perte d'informations
 
 ARTICLE 29 DATA PROTECTION WORKING PARTY
 http://ec.europa.eu/justice/data-protection/article-29/documentation/opinion-recommendation/files/2014/wp216_en.pdf
