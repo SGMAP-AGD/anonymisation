@@ -19,4 +19,4 @@ Le code formalise le traitement de k-anonymisation et, en guise d'exemple, est n
 
 Les données exploitées pour tester notre algorithme peuvent être téléchargées : 
 * Data.gouv.fr (Transparence Santé)
-* (http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para)[Insee] (Enrichissement des données)
+* [http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para](Insee) (Enrichissement des données)
