@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 """
 A partir des fonctions du dépôt anonymizer, ce fichier va notamment vous permettre de :
 
@@ -161,8 +165,11 @@ annuaire = {'Médecin omnipraticien' : ['benef_specialite_code', '[SM54]'],
 
 # On charge les données INSEE
 
-chemin_insee = 'insee_sante.csv'
-insee_init = pd.read_csv(chemin_insee, sep=";", encoding = "ISO-8859-1")
+# On charge les données INSEE
+
+chemin_insee = '/home/pierre-louis/Téléchargements/Python/insee_sante.csv'
+
+insee_init = pd.read_csv(chemin_insee, sep=";", encoding = "ISO-8859-1", low_memory=False)
 insee_init.columns.astype(str)
 
 insee_init['Département'] = insee_init['Département'].astype(str)
@@ -170,10 +177,10 @@ insee_init['Région 2016'] = insee_init['Région 2016'].astype(str)
 
 insee_init['Département'] = first_letters(insee_init['Département'],2)
 
-# On fusionne les départements d'Outre-mer dans une seule catégorie (trop identifiant, sinon)
+# On fusionne les départements d'Outre-mer dans une seule catégorie (trop identifiant, sinon)  
 
 outremer = ['1','2','3','4','6']
-insee_init['Région 2016'][insee_init['Région 2016'].isin(outremer)] = 1
+insee_init.loc[insee_init['Région 2016'].isin(outremer), 'Région 2016'] = 1
 
 list_région = insee_init['Région 2016'].unique().tolist()
 
@@ -209,13 +216,14 @@ modalites_intactes.append(len(avantages_total[avantages_total['av_ou_conv']=='ou
 
 ## IV. Comparaison
 
-# === Représentation graphique des différences quantitatives entre les deux méthodes (par région) ===
+# === Représentation graphique des différences entre les deux méthodes ===  
 
-""" On mesure : 
-1. Le nombre de **lignes différentes** avant et après l'opération  
-2. Le nombre de **lignes inchangées**  
-3. On stocke ces valeurs dans modalites_modifiees et modalites_intactes  
-Logiquement, modalites_intactes + modalites_modifiees = n."""
+
+# On mesure :  
+
+#1. Le nombre de **lignes différentes** avant et après l'opération  
+#2. Le nombre de **lignes inchangées**  après l'opération  
+#3. On stocke ces valeurs dans modalites_modifiees et modalites_intactes  
 
 n_groups = 2 # data to plot
 
@@ -296,6 +304,3 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-
-
-avantages[var[1]][avantages_kanonym[var[1]] != avantages[var[1]]].unique().tolist()
