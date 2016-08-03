@@ -48,7 +48,9 @@ On considère qu'une base de données est l-diverse :
 + si à chaque combinaison de modalités de variables quasi-identifiantes qui composent la base correspond un groupe composé *d'au moins* k individus et,
 + si ce groupe présente *au moins* l modalités différentes en ce qui concerne la (ou les) variable(s) sensible(s).
 
-### Mesurer la perte d'informations
+### Mesurer la perte d'informations  
+En cours.  
+
 
 ARTICLE 29 DATA PROTECTION WORKING PARTY
 http://ec.europa.eu/justice/data-protection/article-29/documentation/opinion-recommendation/files/2014/wp216_en.pdf
