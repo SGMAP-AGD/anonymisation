@@ -1,7 +1,6 @@
 # anonymisation
 
 Le répertoire anonymisation fournit une méthode, des outils et des références sur l'anonymisation des données à caractère personnel.
-Il est notamment développé par l'équipe de l'Administrateur Général des Données (AGD), en partenariat avec toutes les bonnes volontés.
 
 ## Objectifs et usages  
 
@@ -20,3 +19,6 @@ Le code formalise le traitement de k-anonymisation et, en guise d'exemple, est n
 Les données exploitées pour tester notre algorithme peuvent être téléchargées : 
 * [Transparence Santé](https://www.data.gouv.fr/fr/datasets/transparence-sante-1/) (data.gouv.fr)
 * [Enrichissement des données](http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para) (INSEE)
+
+## Qui sommes-nous ?
+Ce projet est notamment développé par [l'équipe de l'Administrateur Général des Données (AGD)](http://agd.data.gouv.fr/), en partenariat avec toutes les bonnes volontés et les producteurs de données à caractère personnel.
