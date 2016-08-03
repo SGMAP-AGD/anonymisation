@@ -40,9 +40,12 @@ Lors d'une anonymisation par aggrégation, les variables sont modifiées de tell
 + On peut aussi fusionner plusieurs modalités, soit de façon générale (sur toute la base), soit de manière locale (seules les modalités des lignes qui posent problème seront modifiées). Exemple : deux lignes qui prennent comme code postal "75001" et "75014" prennent comme nouvelle modalité "75001 ou 75014".
 
 ### K-anonymat
-La k-anonymisation considère une base de données comme anonymisée, si et seulement si, à chaque combinaison de modalités de variables qui composent la base correspond un nombre *minimum* k d'individus.
+On considère qu'une base de données est k-anonymisée, si et seulement si à chaque combinaison de modalités de variables quasi-identifiantes qui composent la base correspond un *minimum* de k d'individus.
 
 ### L-Diversité
+On considère qu'une base de données est l-diverse :
++ si à chaque combinaison de modalités de variables quasi-identifiantes qui composent la base correspond un groupe composé *d'au moins* k individus et,
++ si ce groupe présente *au moins* l modalités différentes en ce qui concerne la (ou les) variable(s) sensible(s).
 
 ### Mesurer la perte d'informations
 
