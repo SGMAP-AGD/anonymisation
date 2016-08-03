@@ -14,3 +14,9 @@ Ce projet  a pour objectif :
 
 Plus précisément, cet espace est constitué d'un wiki permettent de détailler et de comprendre l'anonymisation. 
 Le code formalise le traitement de k-anonymisation et, en guise d'exemple, est notamment appliqué à la base Transparence Santé.
+
+## Données
+
+Les données exploitées pour tester notre algorithme peuvent être téléchargées : 
+* Data.gouv.fr (Transparence Santé)
+* Insee (Enrichissement des données)
