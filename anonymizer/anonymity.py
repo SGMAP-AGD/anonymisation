@@ -99,6 +99,7 @@ def local_aggregation(tab, k, variables, method='regroup'):
     '''
     assert(isinstance(k, int))
     assert(all([var in tab.columns for var in variables]))
+    assert(all(tab[variables].dtypes == 'object'))
 
     if get_k(tab, variables) >= k:
         return tab
