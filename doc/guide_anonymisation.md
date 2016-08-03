@@ -6,7 +6,7 @@ L'anonymisation est un processus mis en oeuvre lors de certains traitements de d
 * Lier des informations relatives à un individu.
 * Inférer des informations concernant un individu.
 
-L'anonymisation ne se limite pas à la suppression des champs identifiants d'un jeu de données, comme le nom ou l'adresse d'un individu. D'autres variables, qualifiées de réidentifiantes, peuvent être utilisées pour identifier un individu au sein d'un jeu de données. Il est donc nécéssaire de mettre en oeuvre des techniques plus avancées d'anonymisation, comme la généralisation.
+L'anonymisation ne se limite pas à la suppression des champs identifiants d'un jeu de données, comme le nom ou l'adresse d'un individu. D'autres variables, qualifiées de réidentifiantes, peuvent être utilisées pour identifier un individu au sein d'un jeu de données. Il est donc nécessaire de mettre en oeuvre des techniques plus avancées d'anonymisation, comme la généralisation.
 
 ## Classement des variables
 
@@ -35,7 +35,7 @@ Java
 
 ## Anonymisation par généralisation
 
-Lors d'une anonymisation par aggrégation, les variables 
+Lors d'une anonymisation par aggrégation, les variables sont modifiées de telle sorte à rendre la ré-identification impossible. Ces modifications peuvent prendre plusieurs formes. On peut appliquer un changement d'échelle, en passant, par exemple, d'un code communal (75001) à un code départemental (75). On peut aussi fusionner plusieurs modalités, soit de façon générale (sur toute la base), soit de manière locale (seules les modalités des lignes qui posent problème seront modifiées). Exemple : deux lignes qui prennent comme code postal "75001" et "75014" prennent comme nouvelle modalité "75001 ou 75014".
 
 ## K-anonymat
 
