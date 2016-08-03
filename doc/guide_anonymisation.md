@@ -12,9 +12,10 @@ L'anonymisation ne se limite pas à la suppression des champs identifiants d'un 
 
 Une des première étapes du processus d'anonymisation consiste à classer les variables en 3 catégories:
 
-* Variables identifiantes
-* Variables quasi-identifiantes: 
-* Variables sensibles
+* Variables (directement) identifiantes : nom, prénom, identifiant utilisateur, numéro de Sécurité Sociale, etc.
+* Variables quasi-identifiantes : une variable est quasi-identifiante, si, une fois combinée avec d'autres variables, elle permet l'identification d'un individu. Exemple : l'identité de vos parents et votre âge.
+* Variables sensibles : une variable est dite sensible si elle révèle une information personnelle, privée ou confidentielle à propos d'un individu. Exemple : la personne est malade ou non.  
+Notons que la frontière entre ces différents types est parfois assez poreuse : on peut tout à la fois considérer l'adresse d'un individu comme une variable identifiante, quasi-identifiante et sensible. 
 
 ## Variables identifiantes
 
