@@ -16,18 +16,16 @@ def expand_insee (df_groupby_dept, annuaire, avantages) :
     for départmt in départements :
         for profession in pro :
             if annuaire[profession][0] == 'benef_specialite_code' :
-                ligne = ['non renseigné', 'non renseigné',
+                ligne = ['non renseigné',
                          '[PRS]', 'Médecin', '[FR]', '[DR]', annuaire[profession][1], '[RPPS]',
-                         'non renseigné', 'non renseigné', 'non renseigné', 'non renseigné', 'non renseigné',
                          'non renseigné', 'non renseigné', 'non renseigné', départmt, 'non renseigné',
-                         'non renseigné', 'non renseigné', 'non renseigné', 'non']
+                         'non renseigné']
 
             elif annuaire[profession][0] == 'qualite' :
-                ligne = ['non renseigné', 'non renseigné',
+                ligne = ['non renseigné', 
                          '[PRS]', annuaire[profession][1], '[FR]', 'non renseigné', 'non renseigné', 'non renseigné',
-                         'non renseigné', 'non renseigné', 'non renseigné', 'non renseigné', 'non renseigné',
                          'non renseigné', 'non renseigné', 'non renseigné', départmt, 'non renseigné',
-                         'non renseigné', 'non renseigné', 'non renseigné', 'non']
+                         'non renseigné']
 
             nombre_total = effectif_sante_dept.loc[départmt, profession]
             nombre_déjà_présent = len(avantages[(avantages['benef_dept']==départmt)&(avantages[annuaire[profession][0]]==annuaire[profession][1])])
@@ -45,7 +43,7 @@ def expand_insee (df_groupby_dept, annuaire, avantages) :
 # - insee = 'oui' ou insee = 'non' : la base inclut les données INSEE (oui) ou pas (non)
 def nbre_modif (result, base, insee = 'non'):
     if insee == 'oui' :
-        nombre_modifications = (result[result['av_ou_conv']=='oui'] != base[base['av_ou_conv']=='oui']).sum().sum()
+        nombre_modifications = (result[result['ligne_type']=='[A]'] != base[base['ligne_type']=='[A]']).sum().sum()
     else :
         nombre_modifications = (result != base).sum().sum()
     return(nombre_modifications)

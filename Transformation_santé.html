@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=utf-8">
-  <title>Transparence_sante.py</title>
+  <title>Transformation_santé.py</title>
   <link rel="stylesheet" href="pycco.css">
 </head>
 <body>
 <div id='container'>
   <div id="background"></div>
   <div class='section'>
-    <div class='docs'><h1>Transparence_sante.py</h1></div>
+    <div class='docs'><h1>Transformation_santé.py</h1></div>
   </div>
   <div class='clearall'>
   <div class='section' id='section-0'>
@@ -17,13 +17,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      <p>A partir des fonctions du dépôt anonymizer, ce fichier va notamment vous permettre de :</p>
-<ol>
-<li><strong>Importer</strong> les données de la base Transparence Santé.</li>
-<li><strong>Nettoyer</strong> les variables et sélectionner celles à anonymiser</li>
-<li><strong>Anonymiser</strong> les données selon un procédé de K-anonymisation</li>
-<li><strong>Compléter</strong> avec les données INSEE afin d'en mesurer la plus-value.</li>
-</ol>
+      
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span></pre></div>
@@ -35,7 +29,25 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      
+      <p>!/usr/bin/env python</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>A partir des fonctions du dépôt anonymizer, ce fichier va notamment vous permettre de :</p>
+<ol>
+<li><strong>Importer</strong> les données de la base Transparence Santé.</li>
+<li><strong>Nettoyer</strong> les variables et sélectionner celles à anonymiser</li>
+<li><strong>Anonymiser</strong> les données selon un procédé de K-anonymisation</li>
+<li><strong>Compléter</strong> avec les données INSEE afin d'en mesurer la plus-value.</li>
+</ol>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="kn">import</span> <span class="nn">csv</span>
@@ -56,21 +68,10 @@
                                   <span class="n">diversity_distribution</span><span class="p">,</span>
                                   <span class="n">less_diverse_groups</span>
                                 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">anonymizer.transformations</span> <span class="kn">import</span> <span class="p">(</span><span class="n">first_letters</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">anonymizer.transformations</span> <span class="kn">import</span> <span class="p">(</span><span class="n">first_letters</span><span class="p">,</span>
+                                       <span class="n">last_letters</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">anonymizer.transformations</span> <span class="kn">import</span> <span class="n">str_drop</span>
 <span class="kn">from</span> <span class="nn">anonymizer.anonymDF</span> <span class="kn">import</span> <span class="n">AnonymDataFrame</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-2'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-2'>#</a>
-      </div>
-      <h2>I. Nettoyage de la base de données</h2>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -79,13 +80,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
       </div>
-      <p>Importation des 50 000 premières lignes</p>
+      <h2>I. Nettoyage de la base de données</h2>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="n">chemin</span> <span class="o">=</span> <span class="s2">&quot;C:/Users/Pierre-Louis/declaration_avantage_2016_06_06_04_00.csv&quot;</span>
-
-<span class="n">nbre_lignes</span> <span class="o">=</span> <span class="mi">50000</span>
-<span class="n">avantages</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">chemin</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">nbre_lignes</span><span class="p">,</span> <span class="n">low_memory</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -94,10 +92,13 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-4'>#</a>
       </div>
-      <h3><span id="transformatiosn-préalables" href="transformatiosn-préalables"> transformatiosn préalables </span></h3>
+      <p>Importation des 50 000 premières lignes</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="n">chemin</span> <span class="o">=</span> <span class="s2">&quot;/home/pierre-louis/Téléchargements/Python/declaration_avantage_2016_06_06_04_00.csv&quot;</span>
+
+<span class="n">nbre_lignes</span> <span class="o">=</span> <span class="mi">50000</span>
+<span class="n">avantages</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">chemin</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="n">nbre_lignes</span><span class="p">,</span> <span class="n">low_memory</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -106,13 +107,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-5'>#</a>
       </div>
-      <ul>
-<li>On transforme les CP en indicateurs régionaux</li>
-</ul>
+      <h3><span id="séparation-personnes-physiques/morales" href="séparation-personnes-physiques/morales"> Séparation personnes physiques/morales </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_dept&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_letters</span><span class="p">(</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_codepostal&#39;</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_etablissement_dept&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_letters</span><span class="p">(</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_etablissement_codepostal&#39;</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -120,6 +118,47 @@
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>On ne traite pas le cas des personnes morales</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">code_personne_physique</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;[PRS]&#39;</span><span class="p">,</span><span class="s1">&#39;[ETU]&#39;</span><span class="p">]</span>
+<span class="n">personnes_physiques</span> <span class="o">=</span> <span class="n">avantages</span><span class="p">[</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_categorie_code&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">code_personne_physique</span><span class="p">)]</span>
+<span class="n">personnes_morales</span> <span class="o">=</span> <span class="n">avantages</span><span class="p">[</span><span class="o">~</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_categorie_code&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">code_personne_physique</span><span class="p">)]</span>
+<span class="n">avantages</span> <span class="o">=</span> <span class="n">personnes_physiques</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <h3><span id="transformations-préalables" href="transformations-préalables"> transformations préalables </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <ul>
+<li>On transforme les CP en indicateurs régionaux</li>
+</ul>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_dept&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_letters</span><span class="p">(</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;benef_codepostal&#39;</span><span class="p">],</span><span class="mi">2</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
       </div>
       <ul>
 <li>On supprime les CP peu orthodoxes</li>
@@ -133,10 +172,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-7'>
+  <div class='section' id='section-10'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
+        <a class='octothorpe' href='#section-10'>#</a>
       </div>
       <ul>
 <li>On homogénéise les valeurs manquantes ou tierces par la mention "non-renseigné"</li>
@@ -149,46 +188,10 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-8'>
+  <div class='section' id='section-11'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
-      </div>
-      <ul>
-<li>On supprime d'abord les variables identifiantes afin de ne garder que les variables quasi-identifiantes</li>
-</ul>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="n">variables_supprimees</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;avant_convention_lie&#39;</span><span class="p">,</span> <span class="c1"># nom de code de la convention</span>
-                        <span class="s1">&#39;identifiant_type&#39;</span><span class="p">,</span> <span class="c1"># on garde seulement la valeur</span>
-                        <span class="s1">&#39;benef_qualification&#39;</span><span class="p">,</span> <span class="c1"># champ libre qu&#39;on ne garde pas</span>
-                        <span class="s1">&#39;benef_speicalite_libelle&#39;</span><span class="p">,</span> <span class="c1">#</span>
-                        <span class="s1">&#39;ligne_rectification&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;denomination_sociale&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;benef_titre_libelle&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;pays&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;benef_prenom&#39;</span><span class="p">,</span> <span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_nom&#39;</span><span class="p">,</span> <span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_adresse1&#39;</span><span class="p">,</span> <span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_adresse2&#39;</span><span class="p">,</span> <span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_adresse3&#39;</span><span class="p">,</span><span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_adresse4&#39;</span><span class="p">,</span><span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_identifiant_valeur&#39;</span><span class="p">,</span><span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_ville&#39;</span><span class="p">,</span><span class="c1"># identifiant</span>
-                        <span class="s1">&#39;benef_etablissement_ville&#39;</span><span class="p">,</span><span class="c1"># identifiant</span>
-                        <span class="s1">&#39;categorie&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;benef_qualite_code&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;benef_codepostal&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39;benef_etablissement_codepostal&#39;</span><span class="p">]</span>
-
-<span class="n">avantages</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">variables_supprimees</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-9'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-11'>#</a>
       </div>
       <ul>
 <li>On transforme la valeur des conventions/avantages en leur équivalent décile (uniformisation)</li>
@@ -200,53 +203,19 @@
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
-      </div>
-      <ul>
-<li>On transforme la date (signature des avantages) en année/mois (le jour est trop identifiant)</li>
-</ul>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="n">annee</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">mois</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;avant_date_signature&#39;</span><span class="p">],</span> <span class="n">infer_datetime_format</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
-    <span class="n">annee</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">year</span><span class="p">)</span>
-    <span class="n">mois</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
-<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;mois&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mois</span>
-<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;année&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">annee</span>
-<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;avant_nature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;avant_nature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-11'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
-      </div>
-      <p>On crée une colonne "avantages ou conventions" (par la suite, cela nous permettra de différencier les données originales des données INSEE)</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;av_ou_conv&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;oui&#39;</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-12'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      <p>On définit ici les variables traitées pour l'anonymisation</p>
+      <ul>
+<li>On transforme la date (signature des avantages) en mois/année (le jour est trop identifiant)</li>
+</ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="n">var</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;benef_categorie_code&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;qualite&#39;</span><span class="p">,</span> <span class="s1">&#39;benef_titre_code&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;benef_specialite_code&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;benef_dept&#39;</span><span class="p">,</span>
-       <span class="s1">&#39;benef_identifiant_type_code&#39;</span><span class="p">]</span></pre></div>
+      <div class="highlight"><pre><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_letters</span><span class="p">(</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;avant_date_signature&#39;</span><span class="p">],</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;avant_nature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;avant_nature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -255,10 +224,43 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
-      <h2>II. Traitement des données brutes (sans INSEE)</h2>
+      <ul>
+<li>On supprime d'abord les variables identifiantes afin de ne garder que les variables quasi-identifiantes</li>
+</ul>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="n">variables_supprimees</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;avant_convention_lie&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;identifiant_type&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;benef_qualification&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;benef_speicalite_libelle&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;ligne_rectification&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;denomination_sociale&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_titre_libelle&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_prenom&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_nom&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;benef_adresse1&#39;</span><span class="p">,</span> 
+                        <span class="s1">&#39;benef_adresse2&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_adresse3&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_adresse4&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_identifiant_valeur&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_ville&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_etablissement_ville&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;categorie&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_qualite_code&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_codepostal&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;benef_etablissement_codepostal&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;ligne_identifiant&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;pays&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;benef_denomination_sociale&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;benef_objet_social&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;avant_date_signature&#39;</span><span class="p">,</span>
+                        <span class="s1">&#39;avant_montant_ttc&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;benef_etablissement&#39;</span><span class="p">]</span>
+
+<span class="n">avantages</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">variables_supprimees</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;montant_décile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;montant_décile&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+<span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -267,16 +269,12 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-14'>#</a>
       </div>
-      <p>On k-anonymise dès maintenant la base brute.
-On définit ici k = 5</p>
+      <p>On définit ici les variables traitées pour l'anonymisation</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="n">copy</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">copy</span>
-<span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">avantages_kanonym</span> <span class="o">=</span> <span class="n">local_aggregation</span><span class="p">(</span><span class="n">avantages</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">k</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;regroup&#39;</span><span class="p">)</span>
-
-<span class="n">modalites_modifiees</span> <span class="o">=</span> <span class="p">[(</span><span class="n">avantages_kanonym</span> <span class="o">!=</span> <span class="n">avantages</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()]</span> <span class="c1"># Nombre de lignes modifiées</span>
-<span class="n">modalites_intactes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">avantages</span><span class="p">[</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;av_ou_conv&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;oui&#39;</span><span class="p">])</span> <span class="o">-</span> <span class="n">modalites_modifiees</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># Nombre de lignes intactes</span></pre></div>
+      <div class="highlight"><pre><span class="n">var</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">var</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">)</span>
+<span class="n">var</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;avant_nature&#39;</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -285,7 +283,7 @@ On définit ici k = 5</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-15'>#</a>
       </div>
-      <h2>II. Chargement des données INSEE</h2>
+      <h2>II. Traitement des données brutes (sans INSEE)</h2>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -296,6 +294,39 @@ On définit ici k = 5</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>On k-anonymise dès maintenant la base brute.
+On définit ici k = 5</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">copy</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">copy</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">avantages_kanonym</span> <span class="o">=</span> <span class="n">local_aggregation</span><span class="p">(</span><span class="n">avantages</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">k</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;regroup&#39;</span><span class="p">)</span>
+
+
+
+
+<span class="n">modalites_modifiees</span> <span class="o">=</span> <span class="p">[((</span><span class="n">avantages_kanonym</span><span class="p">[</span><span class="n">avantages_kanonym</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">!=</span> <span class="n">avantages</span><span class="p">[</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())]</span>
+<span class="n">modalites_intactes</span> <span class="o">=</span> <span class="p">[((</span><span class="n">avantages_kanonym</span><span class="p">[</span><span class="n">avantages_kanonym</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="n">avantages</span><span class="p">[</span><span class="n">avantages</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      <h2>II. Chargement des données INSEE</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
       </div>
       <p>construction d'un dictionnaire reliant les professions (INSEE) aux professions (Transparence Santé)</p>
     </div>
@@ -326,22 +357,10 @@ On définit ici k = 5</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-17'>
+  <div class='section' id='section-19'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-17'>#</a>
-      </div>
-      <p>On charge les données INSEE</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-18'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-19'>#</a>
       </div>
       <p>On charge les données INSEE</p>
     </div>
@@ -358,10 +377,10 @@ On définit ici k = 5</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-20'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <p>On fusionne les départements d'Outre-mer dans une seule catégorie (trop identifiant, sinon)  </p>
     </div>
@@ -378,10 +397,10 @@ On définit ici k = 5</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-20'>
+  <div class='section' id='section-21'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
+        <a class='octothorpe' href='#section-21'>#</a>
       </div>
       <h3><span id="on-rajoute-à-la-base-originale-les-données-insee" href="on-rajoute-à-la-base-originale-les-données-insee"> On rajoute à la base originale les données INSEE </span></h3>
     </div>
@@ -390,36 +409,21 @@ On définit ici k = 5</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
+  <div class='section' id='section-22'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <p>avantages_total est donc constituée de la base Transparence Santé, complétée par les données INSEE</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="n">g</span> <span class="o">=</span> <span class="n">insee</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;Département&#39;</span><span class="p">)</span>
 
-<span class="n">expand_insee</span> <span class="o">=</span> <span class="n">expand_insee</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">annuaire</span><span class="p">,</span> <span class="n">avantages</span><span class="p">)</span>
+<span class="n">expanded_insee</span> <span class="o">=</span> <span class="n">expand_insee</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">annuaire</span><span class="p">,</span> <span class="n">avantages</span><span class="p">)</span>
 
-<span class="n">expand_insee</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">avantages_total</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">avantages</span><span class="p">,</span> <span class="n">expand_insee</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-22'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
-      </div>
-      <h3><span id="on-anonymise-(données-enrichies)" href="on-anonymise-(données-enrichies)"> On anonymise (données enrichies) </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="n">result_insee</span> <span class="o">=</span> <span class="n">local_aggregation</span><span class="p">(</span><span class="n">avantages_total</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">k</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;regroup&#39;</span><span class="p">)</span>
-<span class="n">nombre_de_modifications</span> <span class="o">=</span> <span class="n">nbre_modif</span><span class="p">(</span><span class="n">result_insee</span><span class="p">,</span> <span class="n">avantages_total</span><span class="p">,</span> <span class="s1">&#39;oui&#39;</span><span class="p">)</span>
-
-<span class="n">modalites_modifiees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nombre_de_modifications</span><span class="p">)</span>
-<span class="n">modalites_intactes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">avantages_total</span><span class="p">[</span><span class="n">avantages_total</span><span class="p">[</span><span class="s1">&#39;av_ou_conv&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;oui&#39;</span><span class="p">])</span><span class="o">-</span><span class="n">modalites_modifiees</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></pre></div>
+<span class="n">expanded_insee</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">avantages</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">avantages_total</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">avantages</span><span class="p">,</span> <span class="n">expanded_insee</span><span class="p">])</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">avantages_total</span> <span class="o">=</span> <span class="n">avantages_total</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -428,10 +432,16 @@ On définit ici k = 5</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-23'>#</a>
       </div>
-      <h1>IV. Comparaison</h1>
+      <h3><span id="on-anonymise-(données-enrichies)" href="on-anonymise-(données-enrichies)"> On anonymise (données enrichies) </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre><span class="n">result_insee</span> <span class="o">=</span> <span class="n">local_aggregation</span><span class="p">(</span><span class="n">avantages_total</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">k</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;regroup&#39;</span><span class="p">)</span>
+
+
+
+
+<span class="n">modalites_modifiees</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">result_insee</span><span class="p">[</span><span class="n">result_insee</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">!=</span> <span class="n">avantages_total</span><span class="p">[</span><span class="n">avantages_total</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="n">modalites_intactes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">result_insee</span><span class="p">[</span><span class="n">result_insee</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="n">avantages_total</span><span class="p">[</span><span class="n">avantages_total</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -440,7 +450,7 @@ On définit ici k = 5</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-24'>#</a>
       </div>
-      <h3><span id="représentation-graphique-des-différences-entre-les-deux-méthodes" href="représentation-graphique-des-différences-entre-les-deux-méthodes"> Représentation graphique des différences entre les deux méthodes </span></h3>
+      <h1>IV. Comparaison</h1>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -452,7 +462,7 @@ On définit ici k = 5</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-25'>#</a>
       </div>
-      <p>On mesure :  </p>
+      <h3><span id="représentation-graphique-des-différences-entre-les-deux-méthodes" href="représentation-graphique-des-différences-entre-les-deux-méthodes"> Représentation graphique des différences entre les deux méthodes </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -463,6 +473,18 @@ On définit ici k = 5</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>On mesure :  </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
       </div>
       <ol>
 <li>Le nombre de <strong>lignes différentes</strong> avant et après l'opération  </li>
@@ -491,7 +513,7 @@ On définit ici k = 5</p>
                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span>
                  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Modalités non modifiées&#39;</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500000</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">modalites_modifiees</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">modalites_intactes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
@@ -506,10 +528,10 @@ On définit ici k = 5</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-27'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
       <h3><span id="on-va-maintenant-comparer-par-variables-le-taux-de-remplacement" href="on-va-maintenant-comparer-par-variables-le-taux-de-remplacement"> On va maintenant comparer par variables le taux de remplacement </span></h3>
     </div>
@@ -522,7 +544,7 @@ On définit ici k = 5</p>
 
 <span class="n">modif_par_var_2</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">var</span> <span class="p">:</span>
-    <span class="n">modif_par_var_2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">result_insee</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="n">result_insee</span><span class="p">[</span><span class="s1">&#39;av_ou_conv&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;oui&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">avantages_total</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="n">avantages_total</span><span class="p">[</span><span class="s1">&#39;av_ou_conv&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;oui&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">modif_par_var_2</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">result_insee</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="n">result_insee</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">avantages_total</span><span class="p">[</span><span class="n">variable</span><span class="p">][</span><span class="n">avantages_total</span><span class="p">[</span><span class="s1">&#39;ligne_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;[A]&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 
 
 <span class="n">n_groups</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="c1"># data to plot</span>
@@ -545,7 +567,7 @@ On définit ici k = 5</p>
                  <span class="n">color</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span>
                  <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Séries avec données INSEE&#39;</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">18000</span><span class="p">)</span> <span class="c1">#ax.axhline(y = modalites_modifiees[0]) #ax.axhline(y = taille_données_transparence[0])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30000</span><span class="p">)</span> <span class="c1">#ax.axhline(y = modalites_modifiees[0]) #ax.axhline(y = taille_données_transparence[0])</span>
 
 
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Variable anonymisée&#39;</span><span class="p">)</span>

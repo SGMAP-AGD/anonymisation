@@ -26,6 +26,9 @@ def str_drop(x):
 def first_letters(x, k=1):
     return x.str[:k]
 
+def last_letters(x, k=1):
+    return x.str[k:]
+
 ### 3 - date
 def date_drop(x):
     return x.min()
