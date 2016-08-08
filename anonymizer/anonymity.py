@@ -37,7 +37,7 @@ def less_anonym_groups(df, groupby):
 def _local_aggregate_one_var(serie, k, method):
     ''' réalise l'aggregation locale sur une seule variable'''
     
-    assert method in ['dropped', 'remove', 'regroup']
+    assert method in ['dropped', 'remove', 'regroup', 'year']
 
     counts = serie.value_counts()
     counts_to_change = counts[counts < k]
@@ -45,7 +45,7 @@ def _local_aggregate_one_var(serie, k, method):
     
     if method == 'dropped':
         if counts_to_change.sum() >= k:
-            return serie.replace(index_to_change, 'dropped')
+            return serie.replace(index_to_change, 'non renseigné')
         # si elle ne marche pas, on regroupe
         method = 'regroup'
     # on repere le mode
@@ -66,17 +66,81 @@ def _local_aggregate_one_var(serie, k, method):
         # à k, avec qui regrouper.
         if counts_to_change.sum() < k:
             clients_pour_regrouper = counts[counts >= k]
-            if len(clients_pour_regrouper) == 0:
-                raise Exception('prevoir quelque chose parce que \
-                    tout le monde est dans un groupe plus petit que k')
+            if len(clients_pour_regrouper) != 0:
+                pour_regrouper = clients_pour_regrouper.index[-1]
+                index_to_change.append(pour_regrouper)
+            else :
+                pour_regrouper = counts_to_change.index[-1]
+                index_to_change.append(pour_regrouper)
             # on fait le choix de ne pas déteriorer la plus grande modalité
             # on prend la plus petite possible
-            pour_regrouper = clients_pour_regrouper.index[-1]
-            index_to_change.append(pour_regrouper)
+            
         # le nom de la nouvelle modalité
         new_name = ' ou '.join(index_to_change)
         return serie.replace(index_to_change, new_name)
 
+    if method == 'year':
+        ''' on regroupe l'année considérée avec l'année la plus proche'''
+
+        serie1 = serie.copy()
+        serie2 = serie.copy()
+        valeur_non_renseignée = 9999
+        serie2.replace('non renseigné', valeur_non_renseignée, inplace = True)
+        serie2 = serie2.astype(int)
+        
+        counts = serie2.value_counts()
+        counts_to_change = counts[counts < k]
+        index_to_change = counts_to_change.index.tolist()
+        liste_a_comparer = serie2.unique().tolist()
+        minimums = []
+        
+        for valeur_à_remplacer in index_to_change : 
+            if valeur_à_remplacer not in minimums : 
+                liste_a_comparer2 = liste_a_comparer
+                liste_a_comparer2.remove(valeur_à_remplacer)
+                pour_regrouper = [str(valeur_à_remplacer)]
+
+                d = {}
+                for i in liste_a_comparer2 :
+                    d[i] = abs(i - valeur_à_remplacer)
+                minimum = min(d.items(), key = lambda x: x[1])
+
+                for k in serie1.unique().tolist():
+                    if str(minimum[0]) in k :
+                        pour_regrouper.append(k)
+
+                new_name = ' ou '.join(pour_regrouper)
+                serie1 = serie1.replace(pour_regrouper, new_name)
+                minimums.append(minimum[0])
+        
+        ''' Il faut compléter le code afin de regrouper les modalités "2001 ou 2006" avec par exemple "1998 ou 1996" ou "1998"'''
+        '
+        #if len(nv_count) != 0 :
+        #   index_to_change = nv_count.index.tolist()
+        #  realindex = []
+        # couple = []
+            #for w in index_to_change :
+            #   modalite_splittee = w.split()
+            #  realindex.append(modalite_splittee[0])
+            # couple.append(modalite_splittee)
+                #if valeur_à_remplacer not in minimums : 
+    #
+    #               liste_a_comparer2 = liste_a_comparer
+    #              liste_a_comparer2 = [item for item in liste_a_comparer2 if item not in couple]
+    #             d = {}
+        #            for i in liste_a_comparer2 :
+        #               d[i] = abs(i - valeur_à_remplacer)
+        #          minimum = min(d.items(), key = lambda x: x[1])
+    #
+    #               for k in serie1.unique().tolist():
+    #                  if str(minimum[0]) in k :
+    #                     pour_regrouper.append(k)
+    #
+    #               new_name = ' ou '.join(pour_regrouper)
+    #              serie1 = serie1.replace(pour_regrouper, new_name)
+    #             minimums.append(minimum[0])
+
+        return serie1
 
 
 def local_aggregation(tab, k, variables, method='regroup'):
@@ -124,5 +188,6 @@ def local_aggregation(tab, k, variables, method='regroup'):
     tab[variable_a_aggreger] = new_serie
     
     assert get_k(tab, variables) >= k
+
     return tab
 
