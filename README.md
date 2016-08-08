@@ -12,7 +12,7 @@ Ce projet  a pour objectif :
 ## Contenu  
 
 Plus précisément, cet espace est constitué d'un wiki permettent de détailler et de comprendre l'anonymisation. 
-Le code formalise le traitement de k-anonymisation et, en guise d'exemple, est notamment appliqué à la base Transparence Santé.
+Le code formalise le traitement de k-anonymisation et, en guise d'exemple, est notamment appliqué à la base Transparence Santé. Le détail des différentes étapes est disponible ici : [Transparence Santé](https://github.com/SGMAP-AGD/anonymisation/wiki/Transparence-Sant%C3%A9).
 
 ## Données
 
