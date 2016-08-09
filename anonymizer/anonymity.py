@@ -80,67 +80,72 @@ def _local_aggregate_one_var(serie, k, method):
         return serie.replace(index_to_change, new_name)
 
     if method == 'year':
-        ''' on regroupe l'année considérée avec l'année la plus proche'''
+        ''' on regroupe les années qui ne sont pas k-anonymisées avec l'année la plus proche'''
+        boucle = serie.value_counts()[-1]
+        while boucle < k :
+            serie2 = serie.copy()
+            valeur_non_renseignée = 9999
+            serie2.replace('non renseigné', valeur_non_renseignée, inplace = True)
+            serie2 = serie2.astype(str)  
 
-        serie1 = serie.copy()
-        serie2 = serie.copy()
-        valeur_non_renseignée = 9999
-        serie2.replace('non renseigné', valeur_non_renseignée, inplace = True)
-        serie2 = serie2.astype(int)
-        
-        counts = serie2.value_counts()
-        counts_to_change = counts[counts < k]
-        index_to_change = counts_to_change.index.tolist()
-        liste_a_comparer = serie2.unique().tolist()
-        minimums = []
-        
-        for valeur_à_remplacer in index_to_change : 
-            if valeur_à_remplacer not in minimums : 
-                liste_a_comparer2 = liste_a_comparer
-                liste_a_comparer2.remove(valeur_à_remplacer)
-                pour_regrouper = [str(valeur_à_remplacer)]
+            # pour calculer la distance, on ne va garder que la première
+            # parmi les modalités déjà modifiées en "année ou année"
+            # mais on stocke quand même les "année ou année" pour pouvoir
+            # les modifier à la fin
 
-                d = {}
-                for i in liste_a_comparer2 :
-                    d[i] = abs(i - valeur_à_remplacer)
-                minimum = min(d.items(), key = lambda x: x[1])
+            valeurs_splittées = []
+            for x in serie2.unique() :
+                if 'ou' in x :
+                    splittage = x.split()
+                    serie2 = serie2.replace(x, splittage[0])
+                    valeurs_splittées.append(splittage)
+                    
+            serie2 = serie2.astype(int)
+                    
+            counts = serie2.value_counts()
+            counts_to_change = counts[counts < 5]
+            index_to_change = counts_to_change.index.tolist()
+            liste_a_comparer = serie2.unique().tolist()
+            modifications = []
+                    
+            for valeur_à_remplacer in index_to_change : 
+                if valeur_à_remplacer not in modifications : 
+                    liste_a_comparer2 = liste_a_comparer
+                    liste_a_comparer2.remove(valeur_à_remplacer)
+                    pour_regrouper = [str(valeur_à_remplacer)]
 
-                for k in serie1.unique().tolist():
-                    if str(minimum[0]) in k :
-                        pour_regrouper.append(k)
+                    # on effectue le calcul des distances
+                    # on stocke dans un dictionnaire 
 
-                new_name = ' ou '.join(pour_regrouper)
-                serie1 = serie1.replace(pour_regrouper, new_name)
-                minimums.append(minimum[0])
-        
-        ''' Il faut compléter le code afin de regrouper les modalités "2001 ou 2006" avec par exemple "1998 ou 1996" ou "1998"'''
-        '
-        #if len(nv_count) != 0 :
-        #   index_to_change = nv_count.index.tolist()
-        #  realindex = []
-        # couple = []
-            #for w in index_to_change :
-            #   modalite_splittee = w.split()
-            #  realindex.append(modalite_splittee[0])
-            # couple.append(modalite_splittee)
-                #if valeur_à_remplacer not in minimums : 
-    #
-    #               liste_a_comparer2 = liste_a_comparer
-    #              liste_a_comparer2 = [item for item in liste_a_comparer2 if item not in couple]
-    #             d = {}
-        #            for i in liste_a_comparer2 :
-        #               d[i] = abs(i - valeur_à_remplacer)
-        #          minimum = min(d.items(), key = lambda x: x[1])
-    #
-    #               for k in serie1.unique().tolist():
-    #                  if str(minimum[0]) in k :
-    #                     pour_regrouper.append(k)
-    #
-    #               new_name = ' ou '.join(pour_regrouper)
-    #              serie1 = serie1.replace(pour_regrouper, new_name)
-    #             minimums.append(minimum[0])
+                    d = {}
+                    for i in liste_a_comparer2 :
+                        d[i] = abs(i - valeur_à_remplacer)
 
-        return serie1
+                    # on prend le minimum des distances trouvées
+                    minimum = min(d.items(), key = lambda x: x[1])
+                    
+                    # on check pour voir si la modalité de départ
+                    # est présent en l'état dans notre série
+                    # ou sous forme de "année ou année" (cf 1ère étape)
+                    for groupe_splitté in valeurs_splittées :
+                        if pour_regrouper[0] in groupe_splitté :
+                            pour_regrouper = [' '.join(groupe_splitté)]
+
+                    # on fait la même opération concernant le minimum trouvé :
+                    # si on a trouvé 2005 mais que l'on a que "2005 ou 2006" 
+                    # comme modalité, il faut le repérer et modifier la valeur
+                    # du string du minimum en conséquence
+                    for modalite in serie.unique().tolist():
+                        if str(minimum[0]) in modalite :
+                            pour_regrouper.append(modalite)
+                    
+                    #calcul de la nouvelle modalité
+                    new_name = ' ou '.join(pour_regrouper)
+                    serie = serie.replace(pour_regrouper, new_name)
+                    modifications.append(minimum[0])
+                    modifications.append(valeur_à_remplacer)
+            boucle = serie.value_counts()[-1]
+        return serie
 
 
 def local_aggregation(tab, k, variables, method='regroup'):
