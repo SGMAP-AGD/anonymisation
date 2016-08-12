@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan 20 11:03:48 2016
-
-@author: Alexis Eidelman
+Un module qui permet d'anonymiser une base de données à caractère personnel.
 """
 
+__version__ = "0.0.1"
+
+from anonymity import local_aggregation
