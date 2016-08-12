@@ -22,5 +22,9 @@ Les données exploitées pour tester notre algorithme peuvent être télécharg�
 * [Enrichissement des données](http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para) (INSEE)
 * [Fichier des équidés](https://www.data.gouv.fr/fr/datasets/fichier-des-equides/) (data.gouv.fr)
 
+## Installation
+
+pip install anonymizer
+
 ## Qui sommes-nous ?
 Ce projet est développé par [l'équipe de l'Administrateur Général des Données (AGD)](http://agd.data.gouv.fr/), en collaboration avec toutes les bonnes volontés et les producteurs de données à caractère personnel. [Le forum d'Etalab](https://forum.etalab.gouv.fr/) est aussi ouvert à toute question, remarque ou suggestion. [Une consultation](https://forum.etalab.gouv.fr/search?q=anonymisation) sur les logiciels d'anonymisation y a notamment été initiée.
