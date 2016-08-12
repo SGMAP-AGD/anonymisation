@@ -13,7 +13,7 @@ setup(
     name='anonymiser',
  
     # la version du code
-    version=sm_lib.__version__,
+    version=anonymizer.__version__,
  
 
     packages=find_packages(),
