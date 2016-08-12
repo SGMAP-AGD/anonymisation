@@ -10,6 +10,13 @@ A partir des fonctions du dépôt anonymizer, ce fichier va notamment vous perme
 2. **Nettoyer** les variables et sélectionner celles à anonymiser
 3. **Anonymiser** les données selon un procédé de K-anonymisation
 
+The file can be downloaded here:
+https://www.data.gouv.fr/fr/datasets/fichier-des-equides/
+or directly :
+https://www.data.gouv.fr/s/resources/fichier-des-equides/20141201-185229/Equides.csv
+
+Le fichier de 200 Mo contient autours de 3 millions de lignes
+
 """
 
 import csv
@@ -38,7 +45,7 @@ from anonymizer.anonymDF import AnonymDataFrame
 
 # ## I. Nettoyage de la base de données
 
-chemin = "/home/pierre-louis/Téléchargements/Equides.csv"
+chemin = "D:/data/Equides.csv"
 equides = pd.read_csv(chemin, sep = ";", encoding = "ISO-8859-1", nrows = 50000, header=None, low_memory = False)
 
 
@@ -70,60 +77,43 @@ equides.replace('', 'non renseigné', inplace=True)
 
 
 
-liste_races = equides['Race'].unique().tolist()
-
 # On convertit tous les noms de races en minuscules afin de mieux pouvoir uniformiser
 # et on normalise afin de n'obtenir plus qu'une modalité inconnu, anglo-arabe, weslh ou aa compl.
 
 equides['Race'] = equides['Race'].str.lower()
+liste_races = equides['Race'].unique().tolist()
 
+for word in ['inconnu', 'anglo-arabe', 'welsh', 'aa compl.']:
+    for race in liste_races :
+        if word in race:
+            print(word, race)
+            equides['Race'] = equides['Race'].replace(race, word)
 
-a_remplacer = []
-for i in liste_races :
-    if 'inconnu' in i :
-        a_remplacer.append(i)
-equides['Race'] = equides['Race'].replace(a_remplacer, 'inconnu')
-
-a_remplacer = []
-for i in liste_races :
-    if 'anglo-arabe' in i :
-        a_remplacer.append(i)
-equides['Race'] = equides['Race'].replace(a_remplacer, 'anglo-arabe')
-
-a_remplacer = []
-for i in liste_races :
-    if 'welsh' in i :
-        a_remplacer.append(i)
-equides['Race'] = equides['Race'].replace(a_remplacer, 'welsh')
-
-a_remplacer = []
-for i in liste_races :
-    if 'aa compl.' in i :
-        a_remplacer.append(i)
-equides['Race'] = equides['Race'].replace(a_remplacer, 'aa compl.')
+liste_races = equides['Race'].unique().tolist()
+len(liste_races)
 
 
 # ## II. Anonymisation 
 
 # On définit les variables à anonymiser
 
-var = ['Race',
-       'Sexe',
-       'Robe',
-       'Pays de naissance',
-       'Destiné à la consommation humaine',
-       'Date de naissance']
+ordre_aggregation = ['Race',
+                     'Sexe',
+                     'Robe',
+                     'Pays de naissance',
+                     'Destiné à la consommation humaine',
+                     'Date de naissance']
 
 
 # Pour les cinq premières variables, on anonymise selon la méthode "groupped"
 
 k = 5
-kanonym_equides = local_aggregation(equides.copy(), k, var[:-1])
+kanonym_equides = local_aggregation(equides.copy(), k, ordre_aggregation[:-1])
 
 
 # Pour la date de naissance, on anonymise selon la méthode "year"
 
-kanonym_equides = local_aggregation(kanonym_equides, k, [var[-1]], method = "year")
+kanonym_equides = local_aggregation(kanonym_equides, k, [ordre_aggregation[-1]], method = "year")
 
 
 # ## III. Résultats
