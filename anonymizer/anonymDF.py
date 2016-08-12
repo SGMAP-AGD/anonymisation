@@ -65,7 +65,7 @@ class AnonymDataFrame(object):
         assert isinstance(transformation, dict)
         assert all([x in self.df.columns for x in transformation])
         df = self.df.copy()
-        for colname, transfo in transformation.iteritems():
+        for colname, transfo in transformation.items():
             df[colname] = transfo(self.df[colname])
         return AnonymDataFrame(df, self.identifiant, self.sensible)
 
