@@ -144,7 +144,7 @@ def _local_aggregate_one_var(serie, k, method):
                     new_name = ' ou '.join(pour_regrouper)
                     serie = serie.replace(pour_regrouper, new_name)
                     modifications.append(minimum)
-                    modifications.append(valeur_à_remplacer)
+                    modifications.append(valeur_a_remplacer)
             boucle = serie.value_counts().min()
         return serie
 
