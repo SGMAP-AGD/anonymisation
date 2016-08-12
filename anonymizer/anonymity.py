@@ -35,7 +35,10 @@ def less_anonym_groups(df, groupby):
     return results
 
 def _local_aggregate_one_var(serie, k, method):
-    ''' réalise l'aggregation locale sur une seule variable'''
+    ''' 
+        réalise l'aggregation locale sur une seule variable
+        
+    '''
     
     assert method in ['dropped', 'remove', 'regroup', 'year']
 
@@ -83,68 +86,66 @@ def _local_aggregate_one_var(serie, k, method):
         ''' on regroupe les années qui ne sont pas k-anonymisées avec l'année la plus proche'''
         boucle = serie.value_counts()[-1]
         while boucle < k :
-            serie2 = serie.copy()
+            serie2 = serie.copy()            
             valeur_non_renseignée = 9999
+            assert (sum(serie2 == str(valeur_non_renseignée)) == 0, 'La valeur 9999 est déjà prise')
             serie2.replace('non renseigné', valeur_non_renseignée, inplace = True)
-            serie2 = serie2.astype(str)  
-
-            # pour calculer la distance, on ne va garder que la première
-            # parmi les modalités déjà modifiées en "année ou année"
+              
+            # Lorsqu'on a une modalité 'x ou y', il faut la transformer en 
+            # valeur numérique pour calculer la distance
+            # => on ne va garder que la première valeur
             # mais on stocke quand même les "année ou année" pour pouvoir
             # les modifier à la fin
-
+            serie2 = serie2.astype(str)
             valeurs_splittées = []
             for x in serie2.unique() :
-                if 'ou' in x :
-                    splittage = x.split()
+                if ' ou ' in x:
+                    splittage = x.split(' ou ')
                     serie2 = serie2.replace(x, splittage[0])
                     valeurs_splittées.append(splittage)
-                    
+
             serie2 = serie2.astype(int)
-                    
             counts = serie2.value_counts()
-            counts_to_change = counts[counts < 5]
+            counts_to_change = counts[counts < k]
             index_to_change = counts_to_change.index.tolist()
             liste_a_comparer = serie2.unique().tolist()
             modifications = []
                     
-            for valeur_à_remplacer in index_to_change : 
-                if valeur_à_remplacer not in modifications : 
-                    liste_a_comparer2 = liste_a_comparer
+            for valeur_à_remplacer in index_to_change: 
+                if valeur_à_remplacer not in modifications: 
+                    liste_a_comparer2 = list(liste_a_comparer) # = copy
                     liste_a_comparer2.remove(valeur_à_remplacer)
                     pour_regrouper = [str(valeur_à_remplacer)]
 
                     # on effectue le calcul des distances
-                    # on stocke dans un dictionnaire 
-
+                    # et on les stocke dans un dictionnaire 
                     d = {}
                     for i in liste_a_comparer2 :
                         d[i] = abs(i - valeur_à_remplacer)
 
                     # on prend le minimum des distances trouvées
-                    minimum = min(d.items(), key = lambda x: x[1])
-                    
-                    # on check pour voir si la modalité de départ
+                    minimum = min(d.items(), key = lambda x: x[1])[0]
+                    # on vérifie pour voir si la modalité de départ
                     # est présent en l'état dans notre série
                     # ou sous forme de "année ou année" (cf 1ère étape)
-                    for groupe_splitté in valeurs_splittées :
-                        if pour_regrouper[0] in groupe_splitté :
-                            pour_regrouper = [' '.join(groupe_splitté)]
+                    for groupe_splitté in valeurs_splittées:
+                        if pour_regrouper[0] in groupe_splitté:
+                            pour_regrouper = [' ou '.join(groupe_splitté)]
 
                     # on fait la même opération concernant le minimum trouvé :
                     # si on a trouvé 2005 mais que l'on a que "2005 ou 2006" 
                     # comme modalité, il faut le repérer et modifier la valeur
                     # du string du minimum en conséquence
                     for modalite in serie.unique().tolist():
-                        if str(minimum[0]) in modalite :
+                        if str(minimum) in modalite:
                             pour_regrouper.append(modalite)
                     
                     #calcul de la nouvelle modalité
                     new_name = ' ou '.join(pour_regrouper)
                     serie = serie.replace(pour_regrouper, new_name)
-                    modifications.append(minimum[0])
+                    modifications.append(minimum)
                     modifications.append(valeur_à_remplacer)
-            boucle = serie.value_counts()[-1]
+            boucle = serie.value_counts().min()
         return serie
 
 
