@@ -128,7 +128,7 @@ def _local_aggregate_one_var(serie, k, method):
                     # on vérifie pour voir si la modalité de départ
                     # est présent en l'état dans notre série
                     # ou sous forme de "année ou année" (cf 1ère étape)
-                    for groupe_splitte in valeurs_splittées:
+                    for groupe_splitte in valeurs_splittees:
                         if pour_regrouper[0] in groupe_splitte:
                             pour_regrouper = [' ou '.join(groupe_splitte)]
 
