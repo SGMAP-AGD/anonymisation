@@ -19,8 +19,7 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
-from anonymizer.import_insee import (expand_insee,
-                                     nbre_modif)
+from import_insee import (expand_insee, nbre_modif)
 
 from anonymizer.anonymity import (get_k, get_anonymities,
                                   less_anonym_groups,
@@ -42,14 +41,14 @@ from anonymizer.anonymDF import AnonymDataFrame
 
 # Importation des 50 000 premières lignes
 
-chemin = "/home/pierre-louis/Téléchargements/Python/declaration_avantage_2016_06_06_04_00.csv"
+chemin = "~/data/transparence/declaration_avantage_2016_05_14_04_00.csv"
 
 nbre_lignes = 50000
-avantages = pd.read_csv(chemin, sep = ";", nrows = nbre_lignes, low_memory = False)  
+avantages = pd.read_csv(chemin, sep = ";", nrows = nbre_lignes, low_memory = False)
 
 
 
-# === Séparation personnes physiques/morales ===  
+# === Séparation personnes physiques/morales ===
 
 # On ne traite pas le cas des personnes morales
 
@@ -91,16 +90,16 @@ avantages['avant_nature'] = avantages['avant_nature'].str.lower()
 
 # * On supprime d'abord les variables identifiantes afin de ne garder que les variables quasi-identifiantes
 
-variables_supprimees = ['avant_convention_lie', 
-                        'identifiant_type', 
-                        'benef_qualification', 
-                        'benef_speicalite_libelle', 
+variables_supprimees = ['avant_convention_lie',
+                        'identifiant_type',
+                        'benef_qualification',
+                        'benef_speicalite_libelle',
                         'ligne_rectification',
                         'denomination_sociale',
                         'benef_titre_libelle',
                         'benef_prenom',
-                        'benef_nom', 
-                        'benef_adresse1', 
+                        'benef_nom',
+                        'benef_adresse1',
                         'benef_adresse2',
                         'benef_adresse3',
                         'benef_adresse4',
@@ -196,7 +195,7 @@ insee_init['Département'] = first_letters(insee_init['Département'],2)
 
 
 
-# On fusionne les départements d'Outre-mer dans une seule catégorie (trop identifiant, sinon)  
+# On fusionne les départements d'Outre-mer dans une seule catégorie (trop identifiant, sinon)
 
 outremer = ['1','2','3','4','6']
 insee_init.loc[insee_init['Région 2016'].isin(outremer), 'Région 2016'] = 1
@@ -240,14 +239,14 @@ modalites_intactes.append((result_insee[result_insee['ligne_type']=='[A]'].value
 
 ## IV. Comparaison
 
-# === Représentation graphique des différences entre les deux méthodes ===  
+# === Représentation graphique des différences entre les deux méthodes ===
 
 
-# On mesure :  
+# On mesure :
 
-#1. Le nombre de **lignes différentes** avant et après l'opération  
-#2. Le nombre de **lignes inchangées**  après l'opération  
-#3. On stocke ces valeurs dans modalites_modifiees et modalites_intactes  
+#1. Le nombre de **lignes différentes** avant et après l'opération
+#2. Le nombre de **lignes inchangées**  après l'opération
+#3. On stocke ces valeurs dans modalites_modifiees et modalites_intactes
 
 n_groups = 2 # data to plot
 
@@ -328,4 +327,3 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
-
