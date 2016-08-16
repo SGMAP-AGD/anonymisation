@@ -10,7 +10,7 @@ import anonymizer
 setup(
  
     # le nom de votre bibliothèque, tel qu'il apparaitre sur pypi
-    name='anonymiser',
+    name='anonymizer',
  
     # la version du code
     version=anonymizer.__version__,
