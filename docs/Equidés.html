@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>Equidés.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>Equidés.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>!/usr/bin/env python</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>A partir des fonctions du dépôt anonymizer, ce fichier va notamment vous permettre de :</p>
+<ol>
+<li><strong>Importer</strong> les données de la base équidés.</li>
+<li><strong>Nettoyer</strong> les variables et sélectionner celles à anonymiser</li>
+<li><strong>Anonymiser</strong> les données selon un procédé de K-anonymisation</li>
+</ol>
+<p>The file can be downloaded here:
+https://www.data.gouv.fr/fr/datasets/fichier-des-equides/
+or directly :
+https://www.data.gouv.fr/s/resources/fichier-des-equides/20141201-185229/Equides.csv</p>
+<p>Le fichier de 200 Mo contient autours de 3 millions de lignes</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">anonymizer.import_insee</span> <span class="kn">import</span> <span class="p">(</span><span class="n">expand_insee</span><span class="p">,</span>
+                                     <span class="n">nbre_modif</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">anonymizer.anonymity</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_k</span><span class="p">,</span> <span class="n">get_anonymities</span><span class="p">,</span>
+                                  <span class="n">less_anonym_groups</span><span class="p">,</span>
+                                  <span class="n">local_aggregation</span><span class="p">,</span>
+                                  <span class="n">_local_aggregate_one_var</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">anonymizer.diversity</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_l</span><span class="p">,</span>
+                                  <span class="n">get_diversities</span><span class="p">,</span>
+                                  <span class="n">diversity_distribution</span><span class="p">,</span>
+                                  <span class="n">less_diverse_groups</span>
+                                <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">anonymizer.transformations</span> <span class="kn">import</span> <span class="p">(</span><span class="n">first_letters</span><span class="p">,</span>
+                                       <span class="n">last_letters</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">anonymizer.transformations</span> <span class="kn">import</span> <span class="n">str_drop</span>
+<span class="kn">from</span> <span class="nn">anonymizer.anonymDF</span> <span class="kn">import</span> <span class="n">AnonymDataFrame</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h2>I. Nettoyage de la base de données</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">chemin</span> <span class="o">=</span> <span class="s2">&quot;D:/data/Equides.csv&quot;</span>
+<span class="n">equides</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">chemin</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="s2">&quot;ISO-8859-1&quot;</span><span class="p">,</span> <span class="n">nrows</span> <span class="o">=</span> <span class="mi">50000</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">low_memory</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+
+
+<span class="n">nom_de_colonnes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Sexe&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Robe&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Date de naissance&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Pays de naissance&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Nom&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Destiné à la consommation humaine&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;Date de mort&#39;</span><span class="p">]</span>
+<span class="n">equides</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">nom_de_colonnes</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>On supprime la date de mort puisque cela nous fournirait un indice sur l'âge du cheval,
+qu'il faudrait veiller à anonymiser.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">variables_supprimees</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Date de mort&#39;</span><span class="p">]</span>
+<span class="n">equides</span> <span class="o">=</span> <span class="n">equides</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">variables_supprimees</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <p>La variable "date de naissance" doit être recodée. On choisit de ne garder que l'année.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Date de naissance&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_letters</span><span class="p">(</span><span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Date de naissance&#39;</span><span class="p">],</span><span class="mi">6</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>On remplace les modalités vides ou non renseignées par des "non renseigné"</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">equides</span> <span class="o">=</span> <span class="n">equides</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;non renseigné&#39;</span><span class="p">)</span>
+<span class="n">equides</span> <span class="o">=</span> <span class="n">equides</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="n">equides</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;non renseigné&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>On convertit tous les noms de races en minuscules afin de mieux pouvoir uniformiser
+et on normalise afin de n'obtenir plus qu'une modalité inconnu, anglo-arabe, weslh ou aa compl.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="n">liste_races</span> <span class="o">=</span> <span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;inconnu&#39;</span><span class="p">,</span> <span class="s1">&#39;anglo-arabe&#39;</span><span class="p">,</span> <span class="s1">&#39;welsh&#39;</span><span class="p">,</span> <span class="s1">&#39;aa compl.&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">race</span> <span class="ow">in</span> <span class="n">liste_races</span> <span class="p">:</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">race</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">race</span><span class="p">)</span>
+            <span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">race</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+
+<span class="n">liste_races</span> <span class="o">=</span> <span class="n">equides</span><span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">liste_races</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <h2>II. Anonymisation</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>On définit les variables à anonymiser</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">ordre_aggregation</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Race&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Sexe&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Robe&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Pays de naissance&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Destiné à la consommation humaine&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;Date de naissance&#39;</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Pour les cinq premières variables, on anonymise selon la méthode "groupped"</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">k</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">kanonym_equides</span> <span class="o">=</span> <span class="n">local_aggregation</span><span class="p">(</span><span class="n">equides</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">k</span><span class="p">,</span> <span class="n">ordre_aggregation</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Pour la date de naissance, on anonymise selon la méthode "year"</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">kanonym_equides</span> <span class="o">=</span> <span class="n">local_aggregation</span><span class="p">(</span><span class="n">kanonym_equides</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="p">[</span><span class="n">ordre_aggregation</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">method</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <h2>III. Résultats</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      <p>La base est 5-anonymisée</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">kanonym_equides</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
