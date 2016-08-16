@@ -14,19 +14,22 @@ from anonymizer.diversity import (get_l, get_diversities, diversity_distribution
 
 class AnonymDataFrame(object):
 
-    def __init__(self, df, var_identifiantes, var_sensibles):
+    def __init__(self, df, var_identifiantes, var_sensibles=None):
         assert isinstance(df, pd.DataFrame)
         self.df = df
 
         columns = df.columns
         for var in [var_identifiantes]:
             assert isinstance(var, list)
-        assert isinstance(var_sensibles, str)
         if not all([x in columns for x in var_identifiantes]):
             not_in_columns = [x for x in var_identifiantes if x not in columns]
             raise Exception(not_in_columns, ' not in df.columns')
-        assert var_sensibles in columns
-        assert var_sensibles not in var_identifiantes
+
+        if var_sensibles is not None:
+            assert isinstance(var_sensibles, str)
+            assert var_sensibles in columns
+            assert var_sensibles not in var_identifiantes
+
         self.identifiant = var_identifiantes
         self.sensible = var_sensibles
 
