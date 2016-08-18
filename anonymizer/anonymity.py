@@ -5,6 +5,7 @@ Created on Wed Jan 20 10:55:39 2016
 @author: Alexis Eidelman
 """
 import numpy as np
+import pandas as pd
 
 def _remove_unknown(tab, groupby, unknown):
     if unknown is not None:
@@ -57,7 +58,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
         
     '''
     assert serie_init.dtype == 'object'
-    assert method in ['dropped', 'remove', 'regroup', 'year']
+    assert method in ['into_unknown', 'remove', 'regroup', 'year']
 
     serie_without_null = serie_init[serie_init != unknown]
     serie = serie_without_null
@@ -65,20 +66,24 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
     counts_to_change = counts[counts < k]
     index_to_change = counts_to_change.index.tolist()
 
-    
-    if method == 'dropped':
-        if counts_to_change.sum() >= k:
-            return serie_init.replace(index_to_change, unknown)
-        # si elle ne marche pas, on regroupe
-        method = 'regroup'
-    # on repere le mode
+    # si pas de groupe inférieur à k, on a fini
+    if len(index_to_change) == 0:
+        return serie_init
 
-#    si on a droppé plus de k et sur plus d'une modalité on sait que 
-#    c'est bien anonymisé. sinon, il faut faire autre chose.
+    if len(serie) < k:
+        return pd.Series(unknown, index=serie_init.index)
+    
+    if method == 'into_unknown':
+        # si on a que deux valeurs alors le non renseigné devient 
+        # facile à retrouver : c'est l'autre valeur
+        #    si remplace k et sur plus d'une modalité on sait que 
+        #    c'est bien anonymisé. sinon, il faut faire autre chose.
+        if counts_to_change.sum() >= k  or serie_init.nunique() > 2:
+            return serie_init.replace(index_to_change, unknown)
+        else:
+            return pd.Series(unknown, index=serie_init.index)
 
     if method == 'remove':
-        # TODO: prendre en compte le changement de taille et la
-        # récupération dans la table
         return serie_init[~serie_init.isin(index_to_change)]
     
     if method == 'regroup':
