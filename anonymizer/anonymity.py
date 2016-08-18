@@ -51,7 +51,7 @@ def _name_aggregation(list_of_values):
     return ' ou '.join(list_of_values)
 
 
-def _local_aggregate_one_var(serie, k, method):
+def _local_aggregate_one_var(serie_init, k, method, unknown=''):
     ''' 
         réalise l'aggregation locale sur une seule variable
         
@@ -59,13 +59,15 @@ def _local_aggregate_one_var(serie, k, method):
     
     assert method in ['dropped', 'remove', 'regroup', 'year']
 
+    serie_without_null = serie_init[serie_init != unknown]
+    serie = serie_without_null
     counts = serie.value_counts()
     counts_to_change = counts[counts < k]
     index_to_change = counts_to_change.index.tolist()
     
     if method == 'dropped':
         if counts_to_change.sum() >= k:
-            return serie.replace(index_to_change, 'non renseigné')
+            return serie_init.replace(index_to_change, unknown)
         # si elle ne marche pas, on regroupe
         method = 'regroup'
     # on repere le mode
@@ -76,7 +78,7 @@ def _local_aggregate_one_var(serie, k, method):
     if method == 'remove':
         # TODO: prendre en compte le changement de taille et la
         # récupération dans la table
-        return serie[~serie.isin(index_to_change)]
+        return serie_init[~serie_init.isin(index_to_change)]
     
     if method == 'regroup':
         ''' on regroupe tout avec le mode ;
@@ -166,7 +168,8 @@ def _local_aggregate_one_var(serie, k, method):
         return serie
 
 
-def local_aggregation(tab, k, variables, method='regroup'):
+def local_aggregation(tab, k, variables, method='regroup', 
+                      unknown=''):
     '''
         retourne une table k-anonymisée par aggrégation locale
         
@@ -210,7 +213,7 @@ def local_aggregation(tab, k, variables, method='regroup'):
         )
     tab[variable_a_aggreger] = new_serie
     
-    assert get_k(tab, variables) >= k
+    assert get_k(tab, variables, unknown) >= k
 
     return tab
 
