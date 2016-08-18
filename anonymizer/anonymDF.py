@@ -9,14 +9,14 @@ import pandas as pd
 
 from anonymizer.anonymity import (get_k, get_anonymities, less_anonym_groups,
     local_aggregation)
-
 from anonymizer.diversity import (get_l, get_diversities, diversity_distribution,
                        less_diverse_groups)
 
 
 class AnonymDataFrame(object):
 
-    def __init__(self, df, var_identifiantes, var_sensibles=None):
+    def __init__(self, df, var_identifiantes, var_sensibles=None,
+                 unknown=None):
         assert isinstance(df, pd.DataFrame)
         self.df = df
 
@@ -34,19 +34,24 @@ class AnonymDataFrame(object):
 
         self.identifiant = var_identifiantes
         self.sensible = var_sensibles
+        self.unknown = unknown
 
     def list_valeurs_identifiantes(self):
         for var in self.identifiant:
             print(self.df[var].unique())
 
     def get_k(self):
-        return get_k(self.df, self.identifiant)
+        return get_k(self.df, self.identifiant, self.unknown)
 
-    def get_anonymities(self):
-        return get_anonymities(self.df, self.identifiant)
+    def get_anonymities(self, force_unknown=None):
+        if force_unknown is None:
+            force_unknown = self.unknown
+        return get_anonymities(self.df, self.identifiant, force_unknown)
 
-    def less_anonym_groups(self):
-        return less_anonym_groups(self.df, self.identifiant)
+    def less_anonym_groups(self, force_unknown=None):
+        if force_unknown is None:
+            force_unknown = self.unknown
+        return less_anonym_groups(self.df, self.identifiant, force_unknown)
 
     def get_l(self):
         return get_l(self.df, self.identifiant, self.sensible)

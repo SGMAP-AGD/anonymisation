@@ -4,9 +4,16 @@ Created on Wed Jan 20 10:55:39 2016
 
 @author: Alexis Eidelman
 """
+import numpy as np
 
 
-def get_k(df, groupby):
+def _remove_unknown(tab, unknown):
+    if unknown is not None:
+        cond_unknown = (tab[groupby] == unknown).any(axis=1)
+        tab = tab[~cond_unknown]   
+    return tab
+    
+def get_k(df, groupby, unknown=None):
     """
         Return the k-anonymity level of a df, grouped by the specified columns.
 
@@ -17,15 +24,20 @@ def get_k(df, groupby):
         :return: k-anonymity
         :rtype: int
     """
+    df = _remove_unknown(df, unknown)
     size_group = df.groupby(groupby).size()
+    if len(size_group) == 0:
+        return np.Infinity
     return min(size_group)
 
 
-def get_anonymities(df, groupby):
+def get_anonymities(df, groupby, unknown=None):    
+    df = _remove_unknown(df, unknown)
     return df.groupby(groupby).size()
 
 
-def less_anonym_groups(df, groupby):
+def less_anonym_groups(df, groupby, unknown=None):
+    df = _remove_unknown(df, unknown)
     grp = df.groupby(groupby)
     size_group = grp.size()
     select = size_group[size_group == min(size_group)]
@@ -33,6 +45,7 @@ def less_anonym_groups(df, groupby):
     for group_index in select.index:
         results += [grp.get_group(group_index)]
     return results
+
 
 def _local_aggregate_one_var(serie, k, method):
     ''' 
