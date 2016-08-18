@@ -7,7 +7,9 @@ Created on Sun Nov 01 19:28:44 2015
 
 import pandas as pd
 
-from anonymizer.anonymity import get_k, get_anonymities, less_anonym_groups
+from anonymizer.anonymity import (get_k, get_anonymities, less_anonym_groups,
+    local_aggregation)
+
 from anonymizer.diversity import (get_l, get_diversities, diversity_distribution,
                        less_diverse_groups)
 
@@ -58,6 +60,8 @@ class AnonymDataFrame(object):
     def less_diverse_groups(self):
         return less_diverse_groups(self.df, self.identifiant, self.sensible)
 
+    def local_aggregation(self, k, method='regroup'):
+        return local_aggregation(self.df, k, self.identifiant, method=method)
 
     def transform(self, transformation):
         ''' return a new AnonymDataFrame with
