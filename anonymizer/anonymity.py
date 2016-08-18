@@ -123,17 +123,12 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
         ''' on regroupe les années qui ne sont pas k-anonymisées avec l'année la plus proche'''
         boucle = serie.value_counts()[-1]
         while boucle < k :
-            serie2 = serie.copy()            
-            valeur_non_renseignee = 9999
-            assert (sum(serie2 == str(valeur_non_renseignee)) == 0, 'La valeur 9999 est déjà prise')
-            serie2.replace('non renseigné', valeur_non_renseignee, inplace = True)
-              
+            serie2 = serie.copy()
             # Lorsqu'on a une modalité 'x ou y', il faut la transformer en 
             # valeur numérique pour calculer la distance
             # => on ne va garder que la première valeur
             # mais on stocke quand même les "année ou année" pour pouvoir
             # les modifier à la fin
-            serie2 = serie2.astype(str)
             valeurs_splittees = []
             for x in serie2.unique() :
                 if ' ou ' in x:
@@ -147,7 +142,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
             index_to_change = counts_to_change.index.tolist()
             liste_a_comparer = serie2.unique().tolist()
             modifications = []
-                    
+
             for valeur_a_remplacer in index_to_change: 
                 if valeur_a_remplacer not in modifications: 
                     liste_a_comparer2 = list(liste_a_comparer) # = copy
@@ -214,19 +209,19 @@ def local_aggregation(tab, k, variables, method, unknown=''):
     variable_a_aggreger = variables[-1]
     if len(variables) == 1:
         new_serie = _local_aggregate_one_var(tab[variable_a_aggreger],
-                                             k, method)
+                                             k, method, unknown)
         tab[variable_a_aggreger] = new_serie        
         return tab
 
     if get_k(tab, variables[:-1]) < k:
-        tab = local_aggregation(tab, k, variables[:-1], method)
+        tab = local_aggregation(tab, k, variables[:-1], method, unknown)
     # on a une table k-anonymisée lorsqu'elle est restreinte aux 
     # len(variables) - 1 premières variables
         
     # on applique l'aggrégation locale d'une variable par groupe
     grp = tab.groupby(variables[:-1])
     new_serie = grp[variable_a_aggreger].apply(
-        lambda x: _local_aggregate_one_var(x, k, method)
+        lambda x: _local_aggregate_one_var(x, k, method, unknown)
         )
     tab[variable_a_aggreger] = new_serie
     
