@@ -13,6 +13,7 @@ There is four parts in that file.
     4 - deals with special function, not always aggregating
 """
 
+import numpy as np
 import pandas as pd
 
 ### 1 - numbers
@@ -137,7 +138,21 @@ def local_aggregation(serie_init, k, method, unknown=''):
         return serie_init.replace(index_to_change, new_name)
 
     if method == 'with_closest':
-        ''' on regroupe les années qui ne sont pas k-anonymisées avec l'année la plus proche'''
+        # on regroupe les nombres qui ne sont pas k-anonymisés avec
+        # la valeur la plus proche
+        df = pd.DataFrame(counts)
+        df['name'] = df.index
+        def _to_float(str_expression):
+            if ' ou ' in str_expression:
+                splittage = str_expression.split(' ou ')
+                barycentre = np.mean([float(k) for k in splittage])
+                return barycentre
+            else:
+                return float(str_expression)
+
+        df['value'] = df['name'].apply(_to_float)     
+        
+        import pdb; pdb.set_trace()
         boucle = serie.value_counts()[-1]
         while boucle < k :
             serie2 = serie.copy()
@@ -147,7 +162,7 @@ def local_aggregation(serie_init, k, method, unknown=''):
             # mais on stocke quand même les "année ou année" pour pouvoir
             # les modifier à la fin
             valeurs_splittees = []
-            for x in serie2.unique() :
+            for x in serie2.unique():
                 if ' ou ' in x:
                     splittage = x.split(' ou ')
                     serie2 = serie2.replace(x, splittage[0])
@@ -159,7 +174,8 @@ def local_aggregation(serie_init, k, method, unknown=''):
             index_to_change = counts_to_change.index.tolist()
             liste_a_comparer = serie2.unique().tolist()
             modifications = []
-    
+            import pdb;
+            pdb.set_trace()
             for valeur_a_remplacer in index_to_change: 
                 if valeur_a_remplacer not in modifications: 
                     liste_a_comparer2 = list(liste_a_comparer) # = copy
@@ -196,5 +212,6 @@ def local_aggregation(serie_init, k, method, unknown=''):
                     modifications.append(minimum)
                     modifications.append(valeur_a_remplacer)
                     serie = serie_init[serie_init != unknown]
+            
             boucle = serie.value_counts().min()
         return serie_init
