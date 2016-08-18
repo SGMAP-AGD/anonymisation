@@ -142,7 +142,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
             index_to_change = counts_to_change.index.tolist()
             liste_a_comparer = serie2.unique().tolist()
             modifications = []
-
+    
             for valeur_a_remplacer in index_to_change: 
                 if valeur_a_remplacer not in modifications: 
                     liste_a_comparer2 = list(liste_a_comparer) # = copy
@@ -172,11 +172,13 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
                         if str(minimum) in modalite:
                             pour_regrouper.append(modalite)
                     
+                    
                     #calcul de la nouvelle modalité
                     new_name = _name_aggregation(pour_regrouper)
                     serie_init = serie_init.replace(pour_regrouper, new_name)
                     modifications.append(minimum)
                     modifications.append(valeur_a_remplacer)
+                    serie = serie_init[serie_init != unknown]
             boucle = serie.value_counts().min()
         return serie_init
 
