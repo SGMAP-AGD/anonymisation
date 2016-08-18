@@ -99,7 +99,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
             
         # le nom de la nouvelle modalité
         new_name = _name_aggregation(index_to_change)
-        return serie.replace(index_to_change, new_name)
+        return serie_init.replace(index_to_change, new_name)
 
     if method == 'year':
         ''' on regroupe les années qui ne sont pas k-anonymisées avec l'année la plus proche'''
@@ -161,11 +161,11 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
                     
                     #calcul de la nouvelle modalité
                     new_name = _name_aggregation(pour_regrouper)
-                    serie = serie.replace(pour_regrouper, new_name)
+                    serie_init = serie_init.replace(pour_regrouper, new_name)
                     modifications.append(minimum)
                     modifications.append(valeur_a_remplacer)
             boucle = serie.value_counts().min()
-        return serie
+        return serie_init
 
 
 def local_aggregation(tab, k, variables, method='regroup', 
