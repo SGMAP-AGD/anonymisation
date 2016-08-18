@@ -6,7 +6,6 @@ Created on Wed Jan 20 10:55:39 2016
 """
 import numpy as np
 
-
 def _remove_unknown(tab, unknown):
     if unknown is not None:
         cond_unknown = (tab[groupby] == unknown).any(axis=1)
@@ -45,6 +44,11 @@ def less_anonym_groups(df, groupby, unknown=None):
     for group_index in select.index:
         results += [grp.get_group(group_index)]
     return results
+
+
+def _name_aggregation(list_of_values):
+    list_of_values.sort()
+    return ' ou '.join(list_of_values)
 
 
 def _local_aggregate_one_var(serie, k, method):
@@ -92,7 +96,7 @@ def _local_aggregate_one_var(serie, k, method):
             # on prend la plus petite possible
             
         # le nom de la nouvelle modalité
-        new_name = ' ou '.join(index_to_change)
+        new_name = _name_aggregation(index_to_change)
         return serie.replace(index_to_change, new_name)
 
     if method == 'year':
@@ -143,7 +147,7 @@ def _local_aggregate_one_var(serie, k, method):
                     # ou sous forme de "année ou année" (cf 1ère étape)
                     for groupe_splitte in valeurs_splittees:
                         if pour_regrouper[0] in groupe_splitte:
-                            pour_regrouper = [' ou '.join(groupe_splitte)]
+                            pour_regrouper = [_name_aggregation(groupe_splitte)]
 
                     # on fait la même opération concernant le minimum trouvé :
                     # si on a trouvé 2005 mais que l'on a que "2005 ou 2006" 
@@ -154,7 +158,7 @@ def _local_aggregate_one_var(serie, k, method):
                             pour_regrouper.append(modalite)
                     
                     #calcul de la nouvelle modalité
-                    new_name = ' ou '.join(pour_regrouper)
+                    new_name = _name_aggregation(pour_regrouper)
                     serie = serie.replace(pour_regrouper, new_name)
                     modifications.append(minimum)
                     modifications.append(valeur_a_remplacer)
