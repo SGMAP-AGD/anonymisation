@@ -6,7 +6,7 @@ Created on Wed Jan 20 10:55:39 2016
 """
 import numpy as np
 
-def _remove_unknown(tab, unknown):
+def _remove_unknown(tab, groupby, unknown):
     if unknown is not None:
         cond_unknown = (tab[groupby] == unknown).any(axis=1)
         tab = tab[~cond_unknown]   
@@ -23,7 +23,7 @@ def get_k(df, groupby, unknown=None):
         :return: k-anonymity
         :rtype: int
     """
-    df = _remove_unknown(df, unknown)
+    df = _remove_unknown(df, groupby, unknown)
     size_group = df.groupby(groupby).size()
     if len(size_group) == 0:
         return np.Infinity
@@ -31,12 +31,12 @@ def get_k(df, groupby, unknown=None):
 
 
 def get_anonymities(df, groupby, unknown=None):    
-    df = _remove_unknown(df, unknown)
+    df = _remove_unknown(df, groupby, unknown)
     return df.groupby(groupby).size()
 
 
 def less_anonym_groups(df, groupby, unknown=None):
-    df = _remove_unknown(df, unknown)
+    df = _remove_unknown(df, groupby, unknown)
     grp = df.groupby(groupby)
     size_group = grp.size()
     select = size_group[size_group == min(size_group)]
