@@ -25,29 +25,25 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 
-from anonymizer.import_insee import (expand_insee,
-                                     nbre_modif)
-
 from anonymizer.anonymity import (get_k, get_anonymities,
                                   less_anonym_groups,
-                                  local_aggregation,
-                                  _local_aggregate_one_var)
+                                  all_local_aggregation)
 from anonymizer.diversity import (get_l,
                                   get_diversities,
                                   diversity_distribution,
                                   less_diverse_groups
                                 )
 from anonymizer.transformations import (first_letters,
-                                       last_letters)
+                                       last_letters,
+                                       local_aggregation)
 from anonymizer.transformations import str_drop
 from anonymizer.anonymDF import AnonymDataFrame
 
 
 # ## I. Nettoyage de la base de données
-
-chemin = "D:/data/Equides.csv"
-equides = pd.read_csv(chemin, sep = ";", encoding = "ISO-8859-1", nrows = 50000, header=None, low_memory = False)
-
+chemin = "~/data/Equides.csv"
+equides = pd.read_csv(chemin, sep = ";", encoding = "ISO-8859-1",
+                      nrows = 50000, header=None, low_memory = False)
 
 nom_de_colonnes = ['Race',
                    'Sexe',
@@ -65,7 +61,6 @@ equides.columns = nom_de_colonnes
 
 variables_supprimees = ['Date de mort']
 equides = equides.drop(variables_supprimees,1)
-
 
 # La variable "date de naissance" doit être recodée. On choisit de ne garder que l'année.
 equides['Date de naissance'] = last_letters(equides['Date de naissance'],6)
@@ -105,19 +100,25 @@ ordre_aggregation = ['Race',
                      'Date de naissance']
 
 
+df = AnonymDataFrame(equides, ordre_aggregation)
+
+#kanonym_equides = df.local_aggregation(5)
 # Pour les cinq premières variables, on anonymise selon la méthode "groupped"
 
 k = 5
-kanonym_equides = local_aggregation(equides.copy(), k, ordre_aggregation[:-1])
-
+#kanonym_equides = local_aggregation(equides.copy(), k, ordre_aggregation[:-1],
+#                                    method='regroup_with_smallest',
+#                                    unknown='non renseigné')
+print('ici')
+kanonym_equides = all_local_aggregation(equides.copy(), k,
+                                    ordre_aggregation[:-1], 
+    method='regroup_with_smallest', unknown='non renseigné')
 
 # Pour la date de naissance, on anonymise selon la méthode "year"
-
-kanonym_equides = local_aggregation(kanonym_equides, k, [ordre_aggregation[-1]], method = "year")
+kanonym_equides['Date de naissance'] = local_aggregation(kanonym_equides['Date de naissance'], k,
+    method = "with_closest", unknown='non renseigné')
 
 
 # ## III. Résultats
 
 # La base est 5-anonymisée
-
-kanonym_equides
