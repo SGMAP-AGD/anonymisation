@@ -58,7 +58,10 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
         
     '''
     assert serie_init.dtype == 'object'
-    assert method in ['into_unknown', 'remove', 'regroup', 'year']
+    assert method in ['into_unknown', 'remove',
+                      'regroup_with_smallest',
+                      'regroup_with_biggest',
+                      'with_closest']
 
     serie_without_null = serie_init[serie_init != unknown]
     serie = serie_without_null
@@ -86,28 +89,37 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
     if method == 'remove':
         return serie_init[~serie_init.isin(index_to_change)]
     
-    if method == 'regroup':
-        ''' on regroupe tout avec le mode ;
-        l'effectif obtenu est plus grand que k '''
-
-        # on cherche un groupe, par construction de taille supérieure
+    if 'regroup' in method:
+        # on regroupe en priorité les petits groupes entre eux
+        # si ça ne suffit pas on va chercher un autre groupe
+        # on cherche donc un groupe, par construction de taille supérieure
         # à k, avec qui regrouper.
+        if counts_to_change.sum() >= k:
+            pass # rien à faire
+            
         if counts_to_change.sum() < k:
             clients_pour_regrouper = counts[counts >= k]
-            if len(clients_pour_regrouper) != 0:
+            if len(clients_pour_regrouper) == 0:
+                # ne doit pas se produire parce que ça veut dire
+                # qu'on a moins de k petit et pas de gros, ça veut
+                # dire qu'on a moins de k lignes
+                raise Exception('Ca ne doit pas arriver')
+            # on cherche un groupe, par construction de taille supérieure
+            # à k, avec qui regrouper.
+            # on recommander plutôt de ne pas déteriorer la plus grande modalité
+            # et de prendre la plus petite possible
+            if method == 'regroup_with_smallest':
                 pour_regrouper = clients_pour_regrouper.index[-1]
-                index_to_change.append(pour_regrouper)
-            else :
-                pour_regrouper = counts_to_change.index[-1]
-                index_to_change.append(pour_regrouper)
-            # on fait le choix de ne pas déteriorer la plus grande modalité
-            # on prend la plus petite possible
-            
+            if method == 'regroup_with_biggest':
+                pour_regrouper = clients_pour_regrouper.index[0]
+
+            index_to_change.append(pour_regrouper)
+
         # le nom de la nouvelle modalité
         new_name = _name_aggregation(index_to_change)
         return serie_init.replace(index_to_change, new_name)
 
-    if method == 'year':
+    if method == 'with_closest':
         ''' on regroupe les années qui ne sont pas k-anonymisées avec l'année la plus proche'''
         boucle = serie.value_counts()[-1]
         while boucle < k :
@@ -174,8 +186,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
         return serie_init
 
 
-def local_aggregation(tab, k, variables, method='regroup', 
-                      unknown=''):
+def local_aggregation(tab, k, variables, method, unknown=''):
     '''
         retourne une table k-anonymisée par aggrégation locale
         
@@ -208,7 +219,7 @@ def local_aggregation(tab, k, variables, method='regroup',
         return tab
 
     if get_k(tab, variables[:-1]) < k:
-        tab = local_aggregation(tab, k, variables[:-1])
+        tab = local_aggregation(tab, k, variables[:-1], method)
     # on a une table k-anonymisée lorsqu'elle est restreinte aux 
     # len(variables) - 1 premières variables
         
