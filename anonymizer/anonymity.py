@@ -56,7 +56,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
         réalise l'aggregation locale sur une seule variable
         
     '''
-    
+    assert serie_init.dtype == 'object'
     assert method in ['dropped', 'remove', 'regroup', 'year']
 
     serie_without_null = serie_init[serie_init != unknown]
@@ -64,6 +64,7 @@ def _local_aggregate_one_var(serie_init, k, method, unknown=''):
     counts = serie.value_counts()
     counts_to_change = counts[counts < k]
     index_to_change = counts_to_change.index.tolist()
+
     
     if method == 'dropped':
         if counts_to_change.sum() >= k:
