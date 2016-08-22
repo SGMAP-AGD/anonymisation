@@ -1,0 +1,8 @@
+# remplacer les chemins avec les chemins de votre systemes
+# effacer ces trois lignes d'instruction
+# sauvegarder et duppliquer ce fichier avec sous le nom config.ini
+
+[PATH]
+DATA = D:\data\BSPP\ETALAB\ETALAB\\03-DATA
+SQL = F:\data\BSPP\ETALAB\ETALAB\ETALAB
+OUTPUT = PATH_OUTPUT
