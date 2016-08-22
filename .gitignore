@@ -60,3 +60,5 @@ target/
 *.spyderproject
 
 .ipynb_checkpoints
+
+anonymizer/config_anonymizer.ini
