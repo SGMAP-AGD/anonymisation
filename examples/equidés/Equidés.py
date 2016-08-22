@@ -39,10 +39,14 @@ from anonymizer.transformations import (first_letters,
 from anonymizer.transformations import str_drop
 from anonymizer.anonymDF import AnonymDataFrame
 
+from anonymizer.config_anonymizer import config
+import os
+import io
+
 
 # ## I. Nettoyage de la base de données
-chemin = "~/data/Equides.csv"
-equides = pd.read_csv(chemin, sep = ";", encoding = "ISO-8859-1",
+path_data = config['PATH']['DATA']
+equides = pd.read_csv(path_data, sep = ";", encoding = "ISO-8859-1",
                       nrows = 50000, header=None, low_memory = False)
 
 nom_de_colonnes = ['Race',

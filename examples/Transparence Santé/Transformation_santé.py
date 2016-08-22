@@ -35,16 +35,20 @@ from anonymizer.transformations import (first_letters,
 from anonymizer.transformations import str_drop
 from anonymizer.anonymDF import AnonymDataFrame
 
+from anonymizer.config_anonymizer import config
+import os
+import io
+
 
 
 # ## I. Nettoyage de la base de données
 
 # Importation des 50 000 premières lignes
 
-chemin = "~/data/transparence/declaration_avantage_2016_05_14_04_00.csv"
+path_data = config['PATH']['DATA']
 
 nbre_lignes = 50000
-avantages = pd.read_csv(chemin, sep = ";", nrows = nbre_lignes, low_memory = False)
+avantages = pd.read_csv(path_data, sep = ";", nrows = nbre_lignes, low_memory = False)
 
 
 
