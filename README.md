@@ -11,20 +11,23 @@ Ce projet  a pour objectif :
 
 ## Contenu  
 
-Plus précisément, cet espace est constitué d'un wiki permettent de détailler et de comprendre l'anonymisation. 
-Le code formalise le traitement de k-anonymisation et, en guise de cas pratique, est notamment appliqué à la base Transparence Santé. Le détail des différentes étapes est disponible ici : [Transparence Santé](https://github.com/SGMAP-AGD/anonymisation/wiki/Transparence-Sant%C3%A9).
-Un autre exemple est appliqué sur la base du fichier des équidés.
+Plus précisément, cet espace est constitué :  
+* D'un [wiki](https://github.com/SGMAP-AGD/anonymisation/wiki) qui détaille la démarche, les outils et [l'exemple de Transparence Santé](https://github.com/SGMAP-AGD/anonymisation/wiki/Transparence-Sant%C3%A9).
+* Du code qui formalise le traitement de k-anonymisation.
+* De deux exemples d'application à [Transparence Santé](Transparence-Santé) et à [Équides](Transparence-Santé).
 
-## Données
 
-Les données exploitées pour tester notre algorithme peuvent être téléchargées : 
+## Données à télécharger
+
+Les données exploitées pour tester notre algorithme peuvent être téléchargées aux endroits suivants : 
 * [Transparence Santé](https://www.data.gouv.fr/fr/datasets/transparence-sante-1/) (data.gouv.fr)
-* [Enrichissement des données](http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para) (INSEE)
+* [Données INSEE pour l'enrichissement des données](http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para) (INSEE)
 * [Fichier des équidés](https://www.data.gouv.fr/fr/datasets/fichier-des-equides/) (data.gouv.fr)
 
 ## Installation
 
-pip install anonymizer
+  pip install anonymizer  
+  
 Pour l'application des exemples, pensez à bien renseigner vos répertoires de travail dans chacun des fichiers config-anonymizer.ini respectifs. Des exemples (config_anonymizer.ini.exemple) sont donnés.
 
 ## Qui sommes-nous ?
