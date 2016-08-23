@@ -11,6 +11,26 @@ A partir des fonctions du dépôt anonymizer, ce fichier va notamment vous perme
 2. **Nettoyer** les variables et sélectionner celles à anonymiser
 3. **Anonymiser** les données selon un procédé de K-anonymisation
 4. **Compléter** avec les données INSEE afin d'en mesurer la plus-value.
+
+
+The file can be downloaded here:
+https://www.data.gouv.fr/fr/datasets/transparence-sante-1/
+or directly :
+https://www.transparence.sante.gouv.fr/exports-etalab/exports-etalab.zip
+
+Le jeu de données contient environ 2 millions de lignes. Le fichier exports-etalab.zip contient :
+
+    Le jeu de données
+    La présentation du jeu de données
+    La licence d’utilisation du jeu de données    
+  
+  
+  
+Le fichier INSEE pour l'enrichissement des données peut être téléchargé ici :
+http://www.insee.fr/fr/themes/detail.asp?reg_id=99&ref_id=equip-serv-medical-para
+or directly
+http://www.insee.fr/fr/ppp/bases-de-donnees/donnees-detaillees/equip-serv-medical-para/equip-serv-medical-para-com-2015.zip
+
 """
 
 import csv
