@@ -163,7 +163,8 @@ var.remove('avant_nature')
 
 copy = avantages.copy
 k = 5
-avantages_kanonym = all_local_aggregation(avantages.copy(), k, var, method='regroup')
+avantages_kanonym = all_local_aggregation(avantages.copy(), k, var,
+                                          method='regroup_with_smallest')
 
 
 
@@ -205,7 +206,7 @@ annuaire = {'Médecin omnipraticien' : ['benef_specialite_code', '[SM54]'],
 
 # On charge les données INSEE
 
-chemin_insee = '/home/pierre-louis/Téléchargements/Python/insee_sante.csv'
+chemin_insee = 'TODO'
 
 insee_init = pd.read_csv(chemin_insee, sep=";", encoding = "ISO-8859-1", low_memory=False)
 insee_init.columns.astype(str)
