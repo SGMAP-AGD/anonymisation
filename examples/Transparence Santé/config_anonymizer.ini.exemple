@@ -1,7 +1,0 @@
-# remplacer les chemins avec les chemins de votre systemes
-# effacer ces trois lignes d'instruction
-# sauvegarder et duppliquer ce fichier avec sous le nom config_anonymizer.ini
-
-[PATH]
-DATA = /home/pierre-louis/Documents/declaration_avantages.csv
-OUTPUT = PATH_OUTPUT

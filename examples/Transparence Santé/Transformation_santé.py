@@ -43,8 +43,8 @@ from import_insee import (expand_insee, nbre_modif)
 
 from anonymizer.anonymity import (get_k, get_anonymities,
                                   less_anonym_groups,
-                                  local_aggregation,
-                                  _local_aggregate_one_var)
+                                  all_local_aggregation,
+                                  )
 from anonymizer.diversity import (get_l,
                                   get_diversities,
                                   diversity_distribution,
@@ -60,12 +60,11 @@ import os
 import io
 
 
-
 # ## I. Nettoyage de la base de données
 
 # Importation des 50 000 premières lignes
 
-path_data = config['PATH']['DATA']
+path_data = config['PATH']['TRANSPARENCE']
 
 nbre_lignes = 50000
 avantages = pd.read_csv(path_data, sep = ";", nrows = nbre_lignes, low_memory = False)
@@ -164,7 +163,7 @@ var.remove('avant_nature')
 
 copy = avantages.copy
 k = 5
-avantages_kanonym = local_aggregation(avantages.copy(), k, var, method='regroup')
+avantages_kanonym = all_local_aggregation(avantages.copy(), k, var, method='regroup')
 
 
 

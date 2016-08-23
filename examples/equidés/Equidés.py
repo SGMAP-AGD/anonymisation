@@ -45,7 +45,7 @@ import io
 
 
 # ## I. Nettoyage de la base de données
-path_data = config['PATH']['DATA']
+path_data = config['PATH']['EQUIDES']
 equides = pd.read_csv(path_data, sep = ";", encoding = "ISO-8859-1",
                       nrows = 50000, header=None, low_memory = False)
 
