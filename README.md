@@ -25,6 +25,7 @@ Les données exploitées pour tester notre algorithme peuvent être télécharg�
 ## Installation
 
 pip install anonymizer
+Pour l'application des exemples, pensez à bien renseigner vos répertoires de travail dans chacun des fichiers config-anonymizer.ini respectifs. Des exemples (config_anonymizer.ini.exemple) sont donnés.
 
 ## Qui sommes-nous ?
 Ce projet est développé par [l'équipe de l'Administrateur Général des Données (AGD)](http://agd.data.gouv.fr/), en collaboration avec toutes les bonnes volontés et les producteurs de données à caractère personnel. [Le forum d'Etalab](https://forum.etalab.gouv.fr/) est aussi ouvert à toute question, remarque ou suggestion. [Une consultation](https://forum.etalab.gouv.fr/search?q=anonymisation) sur les logiciels d'anonymisation y a notamment été initiée.
