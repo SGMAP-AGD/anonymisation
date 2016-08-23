@@ -26,7 +26,8 @@ Les données exploitées pour tester notre algorithme peuvent être télécharg�
 
 ## Installation
 
-pip install anonymizer
+  pip install anonymizer  
+  
 Pour l'application des exemples, pensez à bien renseigner vos répertoires de travail dans chacun des fichiers config-anonymizer.ini respectifs. Des exemples (config_anonymizer.ini.exemple) sont donnés.
 
 ## Qui sommes-nous ?
