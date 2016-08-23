@@ -12,7 +12,7 @@ Ce projet  a pour objectif :
 ## Contenu  
 
 Plus précisément, cet espace est constitué :  
-* D'un [wiki](https://github.com/SGMAP-AGD/anonymisation/wiki) qui détaille la démarche, les outils](https://github.com/SGMAP-AGD/anonymisation/wiki/Les-outils) et [l'exemple de Transparence Santé](https://github.com/SGMAP-AGD/anonymisation/wiki/Transparence-Sant%C3%A9).
+* D'un [wiki](https://github.com/SGMAP-AGD/anonymisation/wiki) qui détaille la démarche, les outils et [l'exemple de Transparence Santé](https://github.com/SGMAP-AGD/anonymisation/wiki/Transparence-Sant%C3%A9).
 * Du code qui formalise le traitement de k-anonymisation.
 * De deux exemples d'application à Transparence Santé et à Equides.
 
