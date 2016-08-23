@@ -206,9 +206,9 @@ annuaire = {'Médecin omnipraticien' : ['benef_specialite_code', '[SM54]'],
 
 # On charge les données INSEE
 
-chemin_insee = 'TODO'
+path_data_insee = config['PATH']['INSEE']
 
-insee_init = pd.read_csv(chemin_insee, sep=";", encoding = "ISO-8859-1", low_memory=False)
+insee_init = pd.read_csv(path_data_insee, sep=";", encoding = "ISO-8859-1", low_memory=False)
 insee_init.columns.astype(str)
 
 insee_init['Département'] = insee_init['Département'].astype(str)
@@ -251,7 +251,7 @@ avantages_total = avantages_total.drop('index',1)
 # === On anonymise (données enrichies) ===
 
 
-result_insee = local_aggregation(avantages_total.copy(), k, var, method = 'regroup')
+result_insee = all_local_aggregation(avantages_total.copy(), k, var, method = 'regroup_with_smallest')
 
 
 
