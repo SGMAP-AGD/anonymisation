@@ -69,17 +69,17 @@ class AnonymDataFrame(object):
         return all_local_aggregation(self.df, k, self.identifiant, method=method)
 
     def transform(self, transformation):
-        ''' 
+        '''
          return a new AnonymDataFrame with a transformed self.df
          df is modified by application of transformation
-        - transformation can be        
+        - transformation can be
             - a list of tuple with:
                 - first element is the name the column
                 - second element is the transformation
             Note: it has no effect here but transformation are applied
             in the self.variables order or in the order of list when
             transformation is a list
-        '''         
+        '''
         assert isinstance(transformation, list)
         assert all([len(x) == 2 for x in transformation])
         assert all([x[0] in self.df.columns for x in transformation])
@@ -87,5 +87,54 @@ class AnonymDataFrame(object):
         for colname, transfo in transformation:
             df[colname] = transfo(self.df[colname])
         return AnonymDataFrame(df, self.identifiant, self.sensible)
-        
 
+    def local_transform(self, transformation, k):
+        '''
+         return a new AnonymDataFrame with a transformed self.df
+         df is modified by application of transformation
+
+        The main difference with transformation is that here
+        tranformation are applied by each group only if needed.
+
+        - transformation: can be
+            - a list of tuple with:
+                - first element is the name the column
+                - second element is the transformation
+            - no dict here as order counts
+
+        - k: un entier est le k-anonymat recherché
+
+        Note: it does have effect here but transformation are applied
+        in the self.variables order or in the order of list when
+        transformation is a list
+
+        '''
+        assert isinstance(transformation, list)
+        assert all([len(x) == 2 for x in transformation])
+        assert all([x[0] in self.df.columns for x in transformation])
+        variables = [x[0] for x in transformation]
+        derniere_transfo = transformation[-1]
+        df = self.df.copy()
+
+        if get_k(df, variables, self.unknown) >= k:
+            return self
+
+        if len(transformation) == 1:
+            colname = transformation[0][0]
+            transfo = transformation[0][1]
+            df[colname] = transfo(df[colname])
+            return AnonymDataFrame(df, self.identifiant, self.sensible)
+
+        if get_k(df, variables[:-1], self.unknown) < k:
+            df = self.local_transform(transformation[:-1], k).df
+        # on a une table k-anonymisée lorsqu'elle est restreinte aux
+        # len(variables) - 1 premières variables
+
+        # on applique l'aggrégation locale d'une variable par groupe
+        grp = df.groupby(variables[:-1])
+        fonction = derniere_transfo[1]
+        variable = derniere_transfo[0]
+        df[variable] = grp[variable].apply(fonction)
+        assert get_k(df, variables, self.unknown) >= k
+
+        return AnonymDataFrame(df, self.identifiant, self.sensible)
