@@ -19,6 +19,7 @@ class AnonymDataFrame(object):
                  unknown=None):
         assert isinstance(df, pd.DataFrame)
         self.df = df
+        self.transformation = None
         self.anonimized_df = None
 
         columns = df.columns
@@ -81,6 +82,7 @@ class AnonymDataFrame(object):
             in the self.variables order or in the order of list when
             transformation is a list
         '''
+        self.transformation = transformation
         assert isinstance(transformation, list)
         assert all([len(x) == 2 for x in transformation])
         assert all([x[0] in self.df.columns for x in transformation])
@@ -112,6 +114,7 @@ class AnonymDataFrame(object):
         transformation is a list
 
         '''
+        self.transformation = transformation
         assert isinstance(transformation, list)
         assert all([len(x) == 2 for x in transformation])
         assert all([x[0] in self.df.columns for x in transformation])
