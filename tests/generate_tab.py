@@ -10,8 +10,14 @@ import pandas as pd
 
 def random_table_test_anonym(size, nb_groups, nb_sensible_level):
     group = np.random.randint(nb_groups, size=size)
-    sensible = np.random.randint(nb_sensible_level, size=size)
-    return pd.DataFrame({
-        'identifiant': group,
-        'sensible': sensible
-                         })
+    sensible = np.random.randint(nb_sensible_level, size=len(group))
+    if isinstance(size, int):
+        return pd.DataFrame({
+            'identifiant': group,
+            'sensible': sensible
+                             })
+    else:
+        output = pd.DataFrame(group)
+        output.columns = ['ident_' + str(k) for k in range(size[1])]
+        output['sensible'] = sensible
+        return output
