@@ -8,7 +8,7 @@ Created on Sun Nov 01 19:28:44 2015
 import pandas as pd
 
 from anonymizer.anonymity import (get_k, get_anonymities, less_anonym_groups,
-    local_aggregation)
+    all_local_aggregation)
 from anonymizer.diversity import (get_l, get_diversities, diversity_distribution,
                        less_diverse_groups)
 
@@ -66,18 +66,26 @@ class AnonymDataFrame(object):
         return less_diverse_groups(self.df, self.identifiant, self.sensible)
 
     def local_aggregation(self, k, method='regroup'):
-        return local_aggregation(self.df, k, self.identifiant, method=method)
+        return all_local_aggregation(self.df, k, self.identifiant, method=method)
 
     def transform(self, transformation):
-        ''' return a new AnonymDataFrame with
-            transformation is a dict where:
-                keys are columns of self.df
-                values are transformations to operate on var
-        '''
-        assert isinstance(transformation, dict)
-        assert all([x in self.df.columns for x in transformation])
+        ''' 
+         return a new AnonymDataFrame with a transformed self.df
+         df is modified by application of transformation
+        - transformation can be        
+            - a list of tuple with:
+                - first element is the name the column
+                - second element is the transformation
+            Note: it has no effect here but transformation are applied
+            in the self.variables order or in the order of list when
+            transformation is a list
+        '''         
+        assert isinstance(transformation, list)
+        assert all([len(x) == 2 for x in transformation])
+        assert all([x[0] in self.df.columns for x in transformation])
         df = self.df.copy()
-        for colname, transfo in transformation.items():
+        for colname, transfo in transformation:
             df[colname] = transfo(self.df[colname])
         return AnonymDataFrame(df, self.identifiant, self.sensible)
+        
 
