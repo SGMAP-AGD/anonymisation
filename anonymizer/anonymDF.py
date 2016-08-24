@@ -20,7 +20,7 @@ class AnonymDataFrame(object):
         assert isinstance(df, pd.DataFrame)
         self.df = df
         self.transformation = None
-        self.anonimized_df = None
+        self.anonymized_df = None
 
         columns = df.columns
         for var in [var_identifiantes]:
@@ -37,6 +37,16 @@ class AnonymDataFrame(object):
         self.identifiant = var_identifiantes
         self.sensible = var_sensibles
         self.unknown = unknown
+
+    def copy(self):
+        copy = AnonymDataFrame(self.df,
+                               self.identifiant,
+                               self.sensible,
+                               self.unknown
+                               )
+        copy.anonymized_df = self.anonymized_df
+        copy.transformation = self.transformation
+        return copy
 
     def list_valeurs_identifiantes(self):
         for var in self.identifiant:
@@ -86,12 +96,12 @@ class AnonymDataFrame(object):
         assert isinstance(transformation, list)
         assert all([len(x) == 2 for x in transformation])
         assert all([x[0] in self.df.columns for x in transformation])
-        anonimzed_df = self.df.copy()
+        anonymized_df = self.df.copy()
         for colname, transfo in transformation:
-            anonimzed_df[colname] = transfo(anonimzed_df[colname])
+            anonymized_df[colname] = transfo(anonymized_df[colname])
         
-        self.anonimzed_df = anonimzed_df
-        return anonimzed_df
+        self.anonymized_df = anonymized_df
+        return self.copy()
 
     def local_transform(self, transformation, k):
         '''
@@ -120,30 +130,30 @@ class AnonymDataFrame(object):
         assert all([x[0] in self.df.columns for x in transformation])
         variables = [x[0] for x in transformation]
         derniere_transfo = transformation[-1]
-        anonimzed_df = self.df.copy()
+        anonymized_df = self.df.copy()
 
-        if get_k(anonimzed_df, variables, self.unknown) >= k:
-            self.anonimized_df = anonimzed_df
-            return anonimzed_df
+        if get_k(anonymized_df, variables, self.unknown) >= k:
+            self.anonymized_df = anonymized_df
+            return self.copy()
 
         if len(transformation) == 1:
             colname = transformation[0][0]
             transfo = transformation[0][1]
-            anonimzed_df[colname] = transfo(anonimzed_df[colname])
-            self.anonimized_df = anonimzed_df
-            return anonimzed_df
+            anonymized_df[colname] = transfo(anonymized_df[colname])
+            self.anonymized_df = anonymized_df
+            return self.copy()
 
-        if get_k(anonimzed_df, variables[:-1], self.unknown) < k:
-            anonimzed_df = self.local_transform(transformation[:-1], k)
+        if get_k(anonymized_df, variables[:-1], self.unknown) < k:
+            anonymized_df = self.local_transform(transformation[:-1], k).anonymized_df
         # on a une table k-anonymisée lorsqu'elle est restreinte aux
         # len(variables) - 1 premières variables
 
         # on applique l'aggrégation locale d'une variable par groupe
-        grp = anonimzed_df.groupby(variables[:-1])
+        grp = anonymized_df.groupby(variables[:-1])
         fonction = derniere_transfo[1]
         variable = derniere_transfo[0]
-        anonimzed_df[variable] = grp[variable].apply(fonction)
-        assert get_k(anonimzed_df, variables, self.unknown) >= k
+        anonymized_df[variable] = grp[variable].apply(fonction)
+        assert get_k(anonymized_df, variables, self.unknown) >= k
 
-        self.anonimized_df = anonimzed_df
-        return anonimzed_df
+        self.anonymized_df = anonymized_df
+        return self.copy()
