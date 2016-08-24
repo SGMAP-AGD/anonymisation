@@ -20,7 +20,7 @@ test.get_l()
 
 
 nb_cols = 4
-tab = random_table_test_anonym((100, nb_cols), 8, 5)
+tab = random_table_test_anonym((1000, nb_cols), 8, 5)
 nom_cols = ['ident_' + str(k) for k in range(nb_cols)]
 tab = tab.astype(str)
 
@@ -31,10 +31,30 @@ test.get_l()
 
 def transfo_0(x):
     return transfo.local_aggregation(x, 5, 'with_closest', unknown='')
-    
+
+def transfo_1(x):
+    return transfo.local_aggregation(x, 5, 'regroup_with_smallest', unknown='')
+
 list_transfo = [('ident_0', transfo_0), ('ident_1', transfo_0),
                 ('ident_2', transfo_0), ('ident_3', transfo_0)]
 
+list_transfo2= [('ident_0', transfo_1), ('ident_1', transfo_0),
+                ('ident_2', transfo_0)]
+
 transfo1 = test.transform(list_transfo)
 transfo2 = test.local_transform(list_transfo, 5)
+
+transfo1 = test.transform([])
+
+from anonymizer.comparison import batterie_de_test
+
+anonymisation1 = test.transform(list_transfo)
+anonymisation2 = test.transform(list_transfo2)
+batterie_de_test(anonymisation1, anonymisation2)
+
+xxx
+
+anonymisation1 = test.transform(list_transfo)
+anonymisation2 = test.transform(list_transfo)
+batterie_de_test(anonymisation1, anonymisation2)
 
