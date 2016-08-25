@@ -63,7 +63,7 @@ equides.columns = nom_de_colonnes
 # On supprime la date de mort puisque cela nous fournirait un indice sur l'âge du cheval,
 # qu'il faudrait veiller à anonymiser.
 
-variables_supprimees = ['Date de mort']
+variables_supprimees = ['Date de mort', 'Destiné à la consommation humaine']
 equides = equides.drop(variables_supprimees,1)
 
 # La variable "date de naissance" doit être recodée. On choisit de ne garder que l'année.
@@ -88,6 +88,7 @@ for word in ['inconnu', 'anglo-arabe', 'welsh', 'aa compl.']:
             print(word, race)
             equides['Race'] = equides['Race'].replace(race, word)
 
+equides.replace('inconnu', 'non renseigné', inplace=True)
 liste_races = equides['Race'].unique().tolist()
 len(liste_races)
 
@@ -104,25 +105,18 @@ ordre_aggregation = ['Race',
                      'Date de naissance']
 
 
-df = AnonymDataFrame(equides, ordre_aggregation)
+Equides = AnonymDataFrame(equides,  ordre_aggregation, unknown='non renseigné')
 
-#kanonym_equides = df.local_aggregation(5)
-# Pour les cinq premières variables, on anonymise selon la méthode "groupped"
+def aggregation_serie(x):
+        return(local_aggregation(x, 5, 'regroup_with_smallest', 'non renseigné'))
+method_anonymisation = [(name, aggregation_serie) for name in ordre_aggregation[:-1]]
 
-k = 5
-#kanonym_equides = local_aggregation(equides.copy(), k, ordre_aggregation[:-1],
-#                                    method='regroup_with_smallest',
-#                                    unknown='non renseigné')
-print('ici')
-kanonym_equides = all_local_aggregation(equides.copy(), k,
-                                    ordre_aggregation[:-1], 
-    method='regroup_with_smallest', unknown='non renseigné')
+def aggregation_year(x):
+        return(local_aggregation(x, 5, 'with_closest', 'non renseigné'))
+method_anonymisation += [('Date de naissance', aggregation_year)]
 
-# Pour la date de naissance, on anonymise selon la méthode "year"
-kanonym_equides['Date de naissance'] = local_aggregation(kanonym_equides['Date de naissance'], k,
-    method = "with_closest", unknown='non renseigné')
+Equides.local_transform(method_anonymisation, 5)
 
+Equides.df = Equides.anonymized_df
 
-# ## III. Résultats
-
-# La base est 5-anonymisée
+Equides.get_k()

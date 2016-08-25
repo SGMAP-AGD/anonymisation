@@ -103,7 +103,7 @@ class AnonymDataFrame(object):
         self.anonymized_df = anonymized_df
         return self.copy()
 
-    def local_transform(self, transformation, k):
+    def local_transform(self, transformation, k, force_unknown=None):
         '''
          return a new AnonymDataFrame with a transformed self.df
          df is modified by application of transformation
@@ -124,6 +124,9 @@ class AnonymDataFrame(object):
         transformation is a list
 
         '''
+
+        if force_unknown is None:
+            force_unknown = self.unknown
         self.transformation = transformation
         assert isinstance(transformation, list)
         assert all([len(x) == 2 for x in transformation])
@@ -132,7 +135,7 @@ class AnonymDataFrame(object):
         derniere_transfo = transformation[-1]
         anonymized_df = self.df.copy()
 
-        if get_k(anonymized_df, variables, self.unknown) >= k:
+        if get_k(anonymized_df, variables, force_unknown) >= k:
             self.anonymized_df = anonymized_df
             return self.copy()
 
@@ -143,7 +146,7 @@ class AnonymDataFrame(object):
             self.anonymized_df = anonymized_df
             return self.copy()
 
-        if get_k(anonymized_df, variables[:-1], self.unknown) < k:
+        if get_k(anonymized_df, variables[:-1], force_unknown) < k:
             anonymized_df = self.local_transform(transformation[:-1], k).anonymized_df
         # on a une table k-anonymisée lorsqu'elle est restreinte aux
         # len(variables) - 1 premières variables
@@ -153,7 +156,7 @@ class AnonymDataFrame(object):
         fonction = derniere_transfo[1]
         variable = derniere_transfo[0]
         anonymized_df[variable] = grp[variable].apply(fonction)
-        assert get_k(anonymized_df, variables, self.unknown) >= k
+        #assert get_k(anonymized_df, variables, force_unknown) >= k
 
         self.anonymized_df = anonymized_df
         return self.copy()
