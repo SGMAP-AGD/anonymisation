@@ -55,6 +55,9 @@ class AnonymDataFrame(object):
     def get_k(self):
         return get_k(self.df, self.identifiant, self.unknown)
 
+    def  get_final_k(self):
+        return get_k(self.anonymized_df, self.identifiant, self.unknown)
+
     def get_anonymities(self, force_unknown=None):
         if force_unknown is None:
             force_unknown = self.unknown

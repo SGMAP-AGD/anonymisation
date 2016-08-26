@@ -81,7 +81,7 @@ personnes_physiques = avantages[avantages['benef_categorie_code'].isin(code_pers
 personnes_morales = avantages[~avantages['benef_categorie_code'].isin(code_personne_physique)]
 avantages = personnes_physiques
 
-
+xxx
 
 # === transformations préalables ===
 
