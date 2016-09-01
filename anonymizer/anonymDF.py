@@ -80,9 +80,6 @@ class AnonymDataFrame(object):
     def less_diverse_groups(self):
         return less_diverse_groups(self.df, self.identifiant, self.sensible)
 
-    def local_aggregation(self, k, method='regroup'):
-        return all_local_aggregation(self.df, k, self.identifiant, method=method)
-
     def transform(self, transformation):
         '''
          return a new AnonymDataFrame with a transformed self.df
