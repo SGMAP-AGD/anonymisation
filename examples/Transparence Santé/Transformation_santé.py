@@ -208,8 +208,9 @@ annuaire = {'Médecin omnipraticien' : ['benef_specialite_code', '[SM54]'],
 
 path_data_insee = config['PATH']['INSEE']
 
-insee_init = pd.read_csv(path_data_insee, sep=";", encoding = "ISO-8859-1", low_memory=False)
-insee_init.columns.astype(str)
+names = pd.read_excel(path_data_insee, encoding = "ISO-8859-1", skiprows=4, skip_footer=36000).columns
+insee_init = pd.read_excel(path_data_insee, encoding = "ISO-8859-1", skiprows=5, headers=None, names=names)
+
 
 insee_init['Département'] = insee_init['Département'].astype(str)
 insee_init['Région 2016'] = insee_init['Région 2016'].astype(str)
