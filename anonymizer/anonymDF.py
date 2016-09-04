@@ -68,6 +68,11 @@ class AnonymDataFrame(object):
             force_unknown = self.unknown
         return less_anonym_groups(self.df, self.identifiant, force_unknown)
 
+    def final_less_anonym_groups(self, force_unknown=None):
+        if force_unknown is None:
+            force_unknown = self.unknown
+        return less_anonym_groups(self.anonymized_df, self.identifiant, force_unknown)
+
     def get_l(self):
         return get_l(self.df, self.identifiant, self.sensible)
 

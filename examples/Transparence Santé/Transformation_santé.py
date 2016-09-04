@@ -161,17 +161,28 @@ var.remove('avant_nature')
 # On k-anonymise dès maintenant la base brute.
 # On définit ici k = 5
 
-copy = avantages.copy
+ordre_aggregation = ['benef_dept',
+        'benef_categorie_code',
+        'qualite',
+        'benef_pays_code',
+        'benef_titre_code',
+        'benef_identifiant_type_code']
+
+Avantages = AnonymDataFrame(avantages.copy(),  ordre_aggregation, unknown='non renseigné')
 k = 5
-avantages_kanonym = all_local_aggregation(avantages.copy(), k, var,
-                                          method='regroup_with_smallest')
 
+def aggregation_serie(x):
+    return(local_aggregation(x, k, 'regroup_with_smallest', 'non renseigné'))
 
+def aggregation_year(x):
+    return(local_aggregation(x, k, 'with_closest', 'non renseigné'))
+    
+method_anonymisation = [(name, aggregation_serie) for name in ordre_aggregation[:-1]] + [('date', aggregation_year)]
 
+Avantages.local_transform(method_anonymisation, k)
 
-modalites_modifiees = [((avantages_kanonym[avantages_kanonym['ligne_type']=='[A]'].values != avantages[avantages['ligne_type']=='[A]'].values).sum())]
-modalites_intactes = [((avantages_kanonym[avantages_kanonym['ligne_type']=='[A]'].values == avantages[avantages['ligne_type']=='[A]'].values).sum())]
-
+modalites_modifiees = (Avantages.anonymized_df.values != avantages.values).sum()
+modalites_intactes = (Avantages.anonymized_df.values == avantages.values).sum()
 
 
 
@@ -252,60 +263,18 @@ avantages_total = avantages_total.drop('index',1)
 # === On anonymise (données enrichies) ===
 
 
-result_insee = all_local_aggregation(avantages_total.copy(), k, var, method = 'regroup_with_smallest')
+Avantages_avec_insee = AnonymDataFrame(avantages_total.copy(),  ordre_aggregation, unknown='non renseigné')
+
+Avantages_avec_insee.local_transform(method_anonymisation, k, force_unknown='Forcer')
+Avantages_avec_insee.df = Avantages_avec_insee.anonymized_df
 
 
 
-
-modalites_modifiees.append((result_insee[result_insee['ligne_type']=='[A]'].values != avantages_total[avantages_total['ligne_type']=='[A]'].values).sum())
-modalites_intactes.append((result_insee[result_insee['ligne_type']=='[A]'].values == avantages_total[avantages_total['ligne_type']=='[A]'].values).sum())
-
-
+table = Avantages_avec_insee.df[Avantages_avec_insee.df['ligne_type']=='[A]']
+modalites_modifiees_avec_insee = (table.values != avantages_total[avantages_total['ligne_type']=='[A]'].values).sum()
+modalites_intactes_avec_insee = (table.values == avantages_total[avantages_total['ligne_type']=='[A]'].values).sum()
 
 ## IV. Comparaison
-
-# === Représentation graphique des différences entre les deux méthodes ===
-
-
-# On mesure :
-
-#1. Le nombre de **lignes différentes** avant et après l'opération
-#2. Le nombre de **lignes inchangées**  après l'opération
-#3. On stocke ces valeurs dans modalites_modifiees et modalites_intactes
-
-n_groups = 2 # data to plot
-
-
-fig, ax = plt.subplots() # create plot # éventuellement mentionner la taille du graphique : figsize=(15, 6)
-
-index = np.arange(n_groups)
-bar_width = 0.35
-opacity = 1
-
-rects1 = plt.bar(index, modalites_modifiees, bar_width,
-                 alpha=opacity,
-                 color='b',
-                 label='Modalités modifiées')
-
-
-rects2 = plt.bar(index + bar_width, modalites_intactes , bar_width,
-                 alpha=opacity,
-                 color='y',
-                 label='Modalités non modifiées')
-
-plt.ylim(0, 500000)
-ax.axhline(y = modalites_modifiees[0])
-ax.axhline(y = modalites_intactes[0])
-
-plt.xlabel('Région')
-plt.ylabel('Modalités modifiées')
-plt.title('Nombre de modalités')
-plt.xticks(index + bar_width, 'bla')
-plt.legend()
-
-plt.tight_layout()
-plt.show()
-
 
 
 # === On va maintenant comparer par variables le taux de remplacement ===

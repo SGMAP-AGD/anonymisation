@@ -39,6 +39,7 @@ def get_anonymities(df, groupby, unknown=None):
 
 
 def less_anonym_groups(df, groupby, unknown=None):
+    df = _remove_unknown(df, groupby[:-1], unknown)
     df = _remove_unknown(df, groupby, unknown)
     grp = df.groupby(groupby)
     size_group = grp.size()
