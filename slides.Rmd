@@ -1,0 +1,126 @@
+---
+title: "Anonymiser des données"
+author: "Paul-Antoine"
+date: "April 10, 2018"
+output:
+  rmdshower::shower_presentation:
+    self_contained: false
+    katex: true
+    ratio: 16x10
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(tricky)
+library(dplyr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Anonymisation
+
+## Principe général 
+
+Les données à caractère personnelles ne sont pas "communicables".
+
+## Exceptions
+
+* Décret « Fourmi-santé »
+* Consentement
+
+## Décret « Fourmi-santé » 1/2
+
+Informations relatives :
+
+> * aux conditions d’organisation de l’administration : organigramme, annuaire de l'administration ;
+> * aux conditions d’organisation de la vie économique, associative et culturelle : RNA et SIRENE ;
+> * aux conditions d’organisation et d’exercice des professions réglementées : notaires, avocats, huissiers et architectes ;
+
+## Exceptions : Décret « Fourmi-santé » 2/2
+
+> * à l’enseignement et la recherche : résultats aux examens et concours administratifs ;
+> * aux conditions d’organisation et d’exercice des activités sportives ;
+> * aux conditions d’organisation et d’exercice de la vie politique : RNE ;
+> * aux conditions d’organisation et d’exercice des activités touristiques ;
+> * formalités préalables prévues par des dispositions législatives ou réglementaires : occupation du domaine public, etc ;
+
+## Exemple : L'annuaire d'Ameli
+
+```{r, message=FALSE, results='markup'}
+read_csv2("data-raw/PS_InfosPratiques.csv", col_names = FALSE, n_max = 100) %>% 
+  select(X2, X3,X6, X9) %>%
+  glimpse()
+```
+
+##  { .fullpage }
+
+<div class="fullpage width">
+<img src="figures/nyctaxi.png">
+</div>
+
+## L'exemple des taxis new-yorkais
+
+* Les données de parcours des taxi new yorkais ont été publié avec hachage des numéros de licence et de permis de conduire
+* Un développeur a désanonymisé les 173 millions d'entrées en moins de 2 heures !
+* Source : https://arstechnica.com/tech-policy/2014/06/poorly-anonymized-logs-reveal-nyc-cab-drivers-detailed-whereabouts/
+
+
+## Réidentification
+
+* Sweeney (2001) a réidentifié une base de données médicale pseudonymisée en la croisant avec une liste électorale.
+* Le croisement réalisé sur un triplet de valeurs : code postal, date de 
+naissance et sexe
+* Ce triplet est unique pour environ 80% de la population des Etats-Unis.
+
+## Pseudonymisation
+
+> Pseudonymisation : traitement de données à caractère personnel de manière à ce qu'on ne puisse pas attribuer les données à une personne physique sans avoir recours à des informations supplémentaires.
+
+Source : Rapport Cadiet
+
+## Anonymisation
+
+> Anonymisation : traitement de données à caractère personnel afin d'empêcher totalement l'identification d'une personne physique
+
+Source : Rapport Cadiet
+
+## Pseudonymiser
+
+* Données structurées : pseudonymisation facile 
+* Données non structurées (décisions de justice) : méthodes de NLP
+
+## Anonymiser
+
+- généralisation
+- échantillonnage
+
+## Définitions 
+
+> * Variables directement identifiantes : nom, prénom, identifiant utilisateur, numéro de Sécurité Sociale, etc.
+> * Variables quasi-identifiantes : une variable est quasi-identifiante, si, une fois combinée avec d'autres variables, elle permet l'identification d'un individu. Par exemple, âge, lieu de naissance et métier. 
+> * Variables sensibles : une variable est dite sensible si elle révèle une information personnelle, privée ou confidentielle à propos d'un individu. Exemple : la personne est malade ou non.
+
+## La k-anonymisation
+
+Un jeu de données est k-anonymisé, si et seulement si à chaque combinaison de catégories quasi-identifiantes qui composent la base correspond un minimum de k individus.
+
+Par exemple : 
+
+* On s'assure qu'on a au moins 5 individus par combinaison de catégories
+
+## `anonymizer` (work in progress)
+
+une librairie Python qui permet de 
+
+* calculer la valeur de k anonymat d'un jeu de données (`get_k()`)
+* k anynimiser un jeu de données avec la fonction (`local_aggregation()`)
+
+-> Source https://github.com/SGMAP-AGD/anonymisation
+
+## Références
+
+* Anonymisation des données : https://github.com/SGMAP-AGD/anonymisation/wiki
+* http://www.benjamin-nguyen.fr/papers/ss.pdf
+
+
+
+

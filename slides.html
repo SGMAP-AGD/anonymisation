@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Anonymiser des données</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="slides_files/shower-ribbon/package/styles/screen-16x10.css">
+  <link rel="stylesheet" href="slides_files/rmdshower/style-common.css">
+  <link rel="stylesheet" href="slides_files/rmdshower/style-ribbon.css">
+  <link rel="stylesheet" href="slides_files/shower-ribbon/style-override.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.js"></script>
+  <script src="slides_files/rmdshower/auto-render.min.js" type="text/javascript"></script>
+  
+  
+  
+  
+  
+</head>
+
+<body class="shower list">
+
+  <header class="caption">
+    <h1>Anonymiser des données</h1>
+    <p>Paul-Antoine</p>
+  </header>
+
+  
+  
+<section id="anonymisation" class="titleslide slide level1"><h2 class="shout">Anonymisation</h2></section><section id="principe-general" class="slide level2">
+<h2>Principe général</h2>
+<p>Les données à caractère personnelles ne sont pas “communicables”.</p>
+</section><section id="exceptions" class="slide level2">
+<h2>Exceptions</h2>
+<ul>
+<li>Décret « Fourmi-santé »</li>
+<li>Consentement</li>
+</ul>
+</section><section id="decret-fourmi-sante-12" class="slide level2">
+<h2>Décret « Fourmi-santé » 1/2</h2>
+<p>Informations relatives :</p>
+<ul>
+<li class="fragment next">aux conditions d’organisation de l’administration : organigramme, annuaire de l’administration ;</li>
+<li class="fragment next">aux conditions d’organisation de la vie économique, associative et culturelle : RNA et SIRENE ;</li>
+<li class="fragment next">aux conditions d’organisation et d’exercice des professions réglementées : notaires, avocats, huissiers et architectes ;</li>
+</ul>
+</section><section id="exceptions-decret-fourmi-sante-22" class="slide level2">
+<h2>Exceptions : Décret « Fourmi-santé » 2/2</h2>
+<ul>
+<li class="fragment next">à l’enseignement et la recherche : résultats aux examens et concours administratifs ;</li>
+<li class="fragment next">aux conditions d’organisation et d’exercice des activités sportives ;</li>
+<li class="fragment next">aux conditions d’organisation et d’exercice de la vie politique : RNE ;</li>
+<li class="fragment next">aux conditions d’organisation et d’exercice des activités touristiques ;</li>
+<li class="fragment next">formalités préalables prévues par des dispositions législatives ou réglementaires : occupation du domaine public, etc ;</li>
+</ul>
+</section><section id="exemple-lannuaire-dameli" class="slide level2">
+<h2>Exemple : L’annuaire d’Ameli</h2>
+<pre><code>## Observations: 100
+## Variables: 4
+## $ X2 &lt;chr&gt; &quot;RABATEL&quot;, &quot;MOUGENOT&quot;, &quot;AULIN GUILLOT&quot;, &quot;TOCHON&quot;, &quot;PIQUERAS...
+## $ X3 &lt;chr&gt; &quot;FABIEN&quot;, &quot;VINCENT&quot;, &quot;AGNES&quot;, &quot;FRANCOISE&quot;, &quot;ERIC&quot;, &quot;CHRISTI...
+## $ X6 &lt;chr&gt; &quot;50 AVENUE LEON MARIE FOURNET&quot;, &quot;50 AVENUE LEON MARIE FOURN...
+## $ X9 &lt;chr&gt; &quot;JASSANS RIOTTIER&quot;, &quot;JASSANS RIOTTIER&quot;, &quot;JASSANS RIOTTIER&quot;,...</code></pre>
+</section><section id="section" class="slide level2 fullpage">
+<h2></h2>
+<div class="fullpage width">
+<p><img src="figures/nyctaxi.png"></p>
+</div>
+</section><section id="lexemple-des-taxis-new-yorkais" class="slide level2">
+<h2>L’exemple des taxis new-yorkais</h2>
+<ul>
+<li>Les données de parcours des taxi new yorkais ont été publié avec hachage des numéros de licence et de permis de conduire</li>
+<li>Un développeur a désanonymisé les 173 millions d’entrées en moins de 2 heures !</li>
+<li>Source : <a href="https://arstechnica.com/tech-policy/2014/06/poorly-anonymized-logs-reveal-nyc-cab-drivers-detailed-whereabouts/" class="uri">https://arstechnica.com/tech-policy/2014/06/poorly-anonymized-logs-reveal-nyc-cab-drivers-detailed-whereabouts/</a></li>
+</ul>
+</section><section id="reidentification" class="slide level2">
+<h2>Réidentification</h2>
+<ul>
+<li>Sweeney (2001) a réidentifié une base de données médicale pseudonymisée en la croisant avec une liste électorale.</li>
+<li>Le croisement réalisé sur un triplet de valeurs : code postal, date de naissance et sexe</li>
+<li>Ce triplet est unique pour environ 80% de la population des Etats-Unis.</li>
+</ul>
+</section><section id="pseudonymisation" class="slide level2">
+<h2>Pseudonymisation</h2>
+<blockquote>
+<p>Pseudonymisation : traitement de données à caractère personnel de manière à ce qu’on ne puisse pas attribuer les données à une personne physique sans avoir recours à des informations supplémentaires.</p>
+</blockquote>
+<p>Source : Rapport Cadiet</p>
+</section><section id="anonymisation-1" class="slide level2">
+<h2>Anonymisation</h2>
+<blockquote>
+<p>Anonymisation : traitement de données à caractère personnel afin d’empêcher totalement l’identification d’une personne physique</p>
+</blockquote>
+<p>Source : Rapport Cadiet</p>
+</section><section id="pseudonymiser" class="slide level2">
+<h2>Pseudonymiser</h2>
+<ul>
+<li>Données structurées : pseudonymisation facile</li>
+<li>Données non structurées (décisions de justice) : méthodes de NLP</li>
+</ul>
+</section><section id="anonymiser" class="slide level2">
+<h2>Anonymiser</h2>
+<ul>
+<li>généralisation</li>
+<li>échantillonnage</li>
+</ul>
+</section><section id="definitions" class="slide level2">
+<h2>Définitions</h2>
+<ul>
+<li class="fragment next">Variables directement identifiantes : nom, prénom, identifiant utilisateur, numéro de Sécurité Sociale, etc.</li>
+<li class="fragment next">Variables quasi-identifiantes : une variable est quasi-identifiante, si, une fois combinée avec d’autres variables, elle permet l’identification d’un individu. Par exemple, âge, lieu de naissance et métier.</li>
+<li class="fragment next">Variables sensibles : une variable est dite sensible si elle révèle une information personnelle, privée ou confidentielle à propos d’un individu. Exemple : la personne est malade ou non.</li>
+</ul>
+</section><section id="la-k-anonymisation" class="slide level2">
+<h2>La k-anonymisation</h2>
+<p>Un jeu de données est k-anonymisé, si et seulement si à chaque combinaison de catégories quasi-identifiantes qui composent la base correspond un minimum de k individus.</p>
+<p>Par exemple :</p>
+<ul>
+<li>On s’assure qu’on a au moins 5 individus par combinaison de catégories</li>
+</ul>
+</section><section id="anonymizer-work-in-progress" class="slide level2">
+<h2><code>anonymizer</code> (work in progress)</h2>
+<p>une librairie Python qui permet de</p>
+<ul>
+<li>calculer la valeur de k anonymat d’un jeu de données (<code>get_k()</code>)</li>
+<li>k anynimiser un jeu de données avec la fonction (<code>local_aggregation()</code>)</li>
+</ul>
+<p>-&gt; Source <a href="https://github.com/SGMAP-AGD/anonymisation" class="uri">https://github.com/SGMAP-AGD/anonymisation</a></p>
+</section><section id="references" class="slide level2">
+<h2>Références</h2>
+<ul>
+<li>Anonymisation des données : <a href="https://github.com/SGMAP-AGD/anonymisation/wiki" class="uri">https://github.com/SGMAP-AGD/anonymisation/wiki</a></li>
+<li><a href="http://www.benjamin-nguyen.fr/papers/ss.pdf" class="uri">http://www.benjamin-nguyen.fr/papers/ss.pdf</a></li>
+</ul>
+</section>
+
+  <!--
+  To hide progress bar from entire presentation
+  just remove “progress” element.
+  -->
+  <!-- <div class="progress"></div> -->
+  <script src="slides_files/rmdshower/node_modules/shower/node_modules/shower-core/shower.min.js"></script>
+  <!-- Copyright © 2015 Yours Truly, Famous Inc. -->
+  <!-- Photos by John Carey, fiftyfootshadows.net -->
+
+    <script>renderMathInElement(document.body);</script>
+  
+  
+</body>
+</html>
