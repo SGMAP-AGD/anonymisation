@@ -5,6 +5,7 @@ Le répertoire anonymisation fournit une méthode, des outils et des référence
 ## Objectifs et usages  
 
 Ce projet  a pour objectif : 
+
 + D'introduire l'utilisateur et le producteur de données aux enjeux de l'anonymisation, d'un point de vue juridique, scientifique et technique.
 + De construire un espace collaboratif autour de ce thème.
 + De proposer une méthode robuste et testée de k-anonymisation de données.  
@@ -12,10 +13,10 @@ Ce projet  a pour objectif :
 ## Contenu  
 
 Plus précisément, cet espace est constitué :  
+
 * D'un [wiki](https://github.com/SGMAP-AGD/anonymisation/wiki) qui détaille la démarche, les outils et [l'exemple de Transparence Santé](https://github.com/SGMAP-AGD/anonymisation/wiki/Transparence-Sant%C3%A9).
 * Du code qui formalise le traitement de k-anonymisation.
 * De deux exemples d'application à [Transparence Santé](Transparence-Santé) et à [Équides](Transparence-Santé).
-
 
 ## Données à télécharger
 
@@ -26,9 +27,10 @@ Les données exploitées pour tester notre algorithme peuvent être télécharg�
 
 ## Installation
 
-  pip install anonymizer  
+    pip install anonymizer  
   
 Pour l'application des exemples, pensez à bien renseigner vos répertoires de travail dans le fichiers config-anonymizer.ini selon l'exemple de config_anonymizer.ini.exemple.
 
-## Qui sommes-nous ?
-Ce projet est développé par [l'équipe de l'Administrateur Général des Données (AGD)](http://agd.data.gouv.fr/), en collaboration avec toutes les bonnes volontés et les producteurs de données à caractère personnel. [Le forum d'Etalab](https://forum.etalab.gouv.fr/) est aussi ouvert à toute question, remarque ou suggestion. [Une consultation](https://forum.etalab.gouv.fr/search?q=anonymisation) sur les logiciels d'anonymisation y a notamment été initiée.
+## Voir aussi
+
+* [Consultation sur les logiciels d'anonymisation](https://forum.etalab.gouv.fr/search?q=anonymisation)
