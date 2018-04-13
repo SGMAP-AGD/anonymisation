@@ -1,4 +1,4 @@
-# anonymisation
+# Anonymisation
 
 Le répertoire anonymisation fournit une méthode, des outils et des références sur l'anonymisation des données à caractère personnel.
 
